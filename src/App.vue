@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <h1>dadada</h1>
-    <i class="toutiao toutiao-dianzan"></i>
-    <van-button type="primary">主要按钮</van-button>
-    <van-button type="info">信息按钮</van-button>
+    <!-- 路由出口 -->
     <router-view />
   </div>
 </template>
@@ -13,8 +10,4 @@ export default {
   name: 'App'
 }
 </script>
-<style lang="less">
-h1 {
-  height: 100px;
-}
-</style>
+<style lang="less"></style>
