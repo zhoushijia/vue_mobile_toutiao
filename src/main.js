@@ -8,6 +8,7 @@ import './styles/index.less'
 import Vant from 'vant'
 // 引入vant样式
 import 'vant/lib/index.css'
+// 引入rem适配
 import 'amfe-flexible'
 
 Vue.use(Vant)
