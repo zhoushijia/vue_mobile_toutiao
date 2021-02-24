@@ -3,7 +3,7 @@
     <!-- 导航栏 -->
     <van-nav-bar class="page-nav-bar" title="登录" />
     <!-- 登录表单 -->
-    <van-form @submit="onLogin">
+    <van-form @submit="onLogin" ref="loginFormRef">
       <van-field
         name="mobile"
         placeholder="请输入用户名"
@@ -24,13 +24,24 @@
       >
         <i slot="left-icon" class="toutiao toutiao-yanzhengma"></i>
         <template #button>
+          <!-- 倒计时组件 -->
+          <!-- 倒计时结束触发finish -->
+          <van-count-down
+            v-if="isCountDownShow"
+            :time="60 * 1000"
+            format="ss s"
+            @finish="isCountDownShow = false"
+          />
+          <!-- 发送验证码 -->
           <!-- native-type="button" 保证不触发提交事件 -->
           <van-button
+            v-else
             round
             size="small"
             type="default"
             class="send-sms-btn"
             native-type="button"
+            @click="sendSms"
             >获取验证码</van-button
           >
         </template>
@@ -45,15 +56,17 @@
 </template>
 
 <script>
-import { login } from '@/api/login'
+import { login, sendSms } from '@/api/login'
 export default {
   name: 'loginIndex',
   data() {
     return {
+      // 表单数据收集
       user: {
         mobile: '',
         code: ''
       },
+      // 表单校验规则
       userFormRules: {
         mobile: [
           { required: true, message: '请填写手机号' },
@@ -65,10 +78,13 @@ export default {
           { required: true, message: '请填写验证码' },
           { pattern: /^\d{6}$/, message: '验证码格式不正确' }
         ]
-      }
+      },
+      // 倒计时组件显示控制
+      isCountDownShow: false
     }
   },
   methods: {
+    // #1 登录
     async onLogin(v) {
       // vant 组件表格收集数据方式
       console.log(v)
@@ -84,8 +100,9 @@ export default {
 
       // 发请求登录
       try {
-        const res = await login(this.user)
-        console.log(res)
+        const { data: res } = await login(this.user)
+        // token 的处理
+        this.$store.commit('setUser', res.data)
         // 下一次的 toast 会覆盖上一次的 toast
         this.$toast.success('登录成功')
       } catch (err) {
@@ -93,6 +110,28 @@ export default {
           this.$toast.fail('电话或验证码不存在')
         } else {
           this.$toast.fail('登录失败')
+        }
+      }
+    },
+    // #2 发送验证码
+    async sendSms() {
+      // 验证手机号是否合法
+      try {
+        await this.$refs.loginFormRef.validate('mobile')
+      } catch (error) {
+        return console.log(error)
+      }
+      // 显示倒计时
+      this.isCountDownShow = true
+      // 发送验证码
+      try {
+        await sendSms(this.user.mobile)
+        this.$toast('发送成功')
+      } catch (error) {
+        if (error.response.status === 429) {
+          this.$toast('发送过于频繁,请稍后重试')
+        } else {
+          this.$toast('发送失败,请稍后重试')
         }
       }
     }
