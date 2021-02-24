@@ -117,6 +117,7 @@ export default {
     async sendSms() {
       // 验证手机号是否合法
       try {
+        // 这里的'mobile'对应的是组件field中的name 会调用对应的rules规则
         await this.$refs.loginFormRef.validate('mobile')
       } catch (error) {
         return console.log(error)
