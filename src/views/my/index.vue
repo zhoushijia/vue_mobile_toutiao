@@ -59,9 +59,16 @@
       </van-grid-item>
     </van-grid>
 
+    <!-- 单元格 -->
     <van-cell title="消息通知" is-link />
     <van-cell class="mb-9" title="小智同学" is-link />
-    <van-cell v-if="user" class="logout-cell" clickable title="退出登录" />
+    <van-cell
+      v-if="user"
+      class="logout-cell"
+      clickable
+      title="退出登录"
+      @click="onLoginOut"
+    />
   </div>
 </template>
 
@@ -69,6 +76,11 @@
 import { mapState } from 'vuex'
 export default {
   name: 'MyIndex',
+  methods: {
+    onLoginOut() {
+      this.$store.commit('setUser', null)
+    }
+  },
   computed: {
     ...mapState(['user'])
   }
