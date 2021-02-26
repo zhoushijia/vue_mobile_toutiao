@@ -2,6 +2,7 @@
   <div class="login-container">
     <!-- 导航栏 -->
     <van-nav-bar class="page-nav-bar" title="登录">
+      <!-- $route.query.redirect 保证是由内部跳转实现关闭icon的显示 -->
       <van-icon
         v-if="$route.query.redirect"
         slot="left"
@@ -113,6 +114,8 @@ export default {
         this.$store.commit('setUser', res.data)
         // 下一次的 toast 会覆盖上一次的 toast
         this.$toast.success('登录成功')
+        // 跳转页面 路由跳转中有值则跳转到对应路径 否则跳转到主页
+        this.$router.push(this.$route.query.redirect || '/')
       } catch (err) {
         if (err.response.status === 400) {
           this.$toast.fail('电话或验证码不存在')
