@@ -4,13 +4,8 @@
     <div v-if="user" class="login-header user-info">
       <div class="base-info">
         <div class="left">
-          <van-image
-            class="avatar"
-            :src="require('../../assets/cry.png')"
-            round
-            fit="cover"
-          />
-          <span class="name">...</span>
+          <van-image class="avatar" :src="userinfo.photo" round fit="cover" />
+          <span class="name">{{ userinfo.name }}</span>
         </div>
         <div class="right">
           <van-button size="mini" round>编辑资料</van-button>
@@ -18,19 +13,19 @@
       </div>
       <div class="data-stats">
         <div class="data-item">
-          <span class="count">10</span>
+          <span class="count">{{ userinfo.art_count }}</span>
           <span class="text">头条</span>
         </div>
         <div class="data-item">
-          <span class="count">10</span>
+          <span class="count">{{ userinfo.follow_count }}</span>
           <span class="text">关注</span>
         </div>
         <div class="data-item">
-          <span class="count">10</span>
+          <span class="count">{{ userinfo.fans_count }}</span>
           <span class="text">粉丝</span>
         </div>
         <div class="data-item">
-          <span class="count">10</span>
+          <span class="count">{{ userinfo.like_count }}</span>
           <span class="text">获赞</span>
         </div>
       </div>
@@ -74,11 +69,41 @@
 
 <script>
 import { mapState } from 'vuex'
+import { getUserinfo } from '@/api/user'
 export default {
   name: 'MyIndex',
+  data() {
+    return {
+      userinfo: {}
+    }
+  },
+  created() {
+    if (this.user) {
+      this.uploadUserinfo()
+    }
+  },
   methods: {
-    onLoginOut() {
-      this.$store.commit('setUser', null)
+    // #1 登出功能
+    async onLoginOut() {
+      const res = await this.$dialog
+        .confirm({
+          title: '退出',
+          message: '是否确认退出？'
+        })
+        .catch(e => e)
+      // console.log(res)
+      if (res === 'confirm') {
+        this.$store.commit('setUser', null)
+      }
+    },
+    // #2 获取用户信息
+    async uploadUserinfo() {
+      try {
+        const { data: res } = await getUserinfo()
+        this.userinfo = res.data
+      } catch (error) {
+        this.$toast('数据获取失败')
+      }
     }
   },
   computed: {

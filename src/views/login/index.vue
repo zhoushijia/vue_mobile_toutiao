@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import { login, sendSms } from '@/api/login'
+import { login, sendSms } from '@/api/user'
 export default {
   name: 'loginIndex',
   data() {
@@ -117,7 +117,7 @@ export default {
         // 跳转页面 路由跳转中有值则跳转到对应路径 否则跳转到主页
         this.$router.push(this.$route.query.redirect || '/')
       } catch (err) {
-        if (err.response.status === 400) {
+        if (err.response && err.response.status === 400) {
           this.$toast.fail('电话或验证码不存在')
         } else {
           this.$toast.fail('登录失败')
