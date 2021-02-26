@@ -1,12 +1,20 @@
 <template>
   <div class="login-container">
     <!-- 导航栏 -->
-    <van-nav-bar class="page-nav-bar" title="登录" />
+    <van-nav-bar class="page-nav-bar" title="登录">
+      <van-icon
+        v-if="$route.query.redirect"
+        slot="left"
+        name="cross"
+        class="van-icon"
+        @click="$router.back()"
+      />
+    </van-nav-bar>
     <!-- 登录表单 -->
     <van-form @submit="onLogin" ref="loginFormRef">
       <van-field
         name="mobile"
-        placeholder="请输入用户名"
+        placeholder="请输入手机号"
         v-model="user.mobile"
         :rules="userFormRules.mobile"
         type="number"
@@ -69,13 +77,13 @@ export default {
       // 表单校验规则
       userFormRules: {
         mobile: [
-          { required: true, message: '请填写手机号' },
+          { required: true, message: '' },
           { pattern: /^1[3578]\d{9}$/, message: '手机号格式不正确' }
           // 下面这种写法不正确
           // { pattern: /^1[3|5|7|8]\d{9}$/, message: '手机号格式不正确' }
         ],
         code: [
-          { required: true, message: '请填写验证码' },
+          { required: true, message: '' },
           { pattern: /^\d{6}$/, message: '验证码格式不正确' }
         ]
       },
