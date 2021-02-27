@@ -25,8 +25,9 @@
         v-for="channel in userChannel"
         :key="channel.id"
         :title="channel.name"
-        >内容 1</van-tab
       >
+        <articles-list :channel="channel"></articles-list>
+      </van-tab>
       <div slot="nav-right" class="placeholder"></div>
       <div slot="nav-right" class="hamburger-btn">
         <i class="toutiao toutiao-gengduo"></i>
@@ -37,6 +38,7 @@
 
 <script>
 import { getChannel } from '@/api/user'
+import ArticlesList from './components/Articles-list.vue'
 export default {
   name: 'HomeIndex',
   data() {
@@ -67,6 +69,9 @@ export default {
         this.$toast('个人频道获取失败')
       }
     }
+  },
+  components: {
+    ArticlesList
   }
 }
 </script>
