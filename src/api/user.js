@@ -30,3 +30,10 @@ export const getUserinfo = () =>
     //   Authorization: `Bearer ${store.state.user.token}`
     // }
   })
+
+// 获取频道数据
+export const getChannel = () =>
+  request({
+    method: 'GET',
+    url: '/app/v1_0/user/channels'
+  })

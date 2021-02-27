@@ -21,11 +21,12 @@
       swipeable
       swipe-threshold="3"
     >
-      <van-tab title="标签 1">内容 1</van-tab>
-      <van-tab title="标签 2">内容 2</van-tab>
-      <van-tab title="标签 3">内容 3</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
-      <van-tab title="标签 4">内容 4</van-tab>
+      <van-tab
+        v-for="channel in userChannel"
+        :key="channel.id"
+        :title="channel.name"
+        >内容 1</van-tab
+      >
       <div slot="nav-right" class="placeholder"></div>
       <div slot="nav-right" class="hamburger-btn">
         <i class="toutiao toutiao-gengduo"></i>
@@ -35,11 +36,36 @@
 </template>
 
 <script>
+import { getChannel } from '@/api/user'
 export default {
   name: 'HomeIndex',
   data() {
     return {
-      activeName: 0
+      activeName: 0,
+      // 频道数据
+      userChannel: []
+    }
+  },
+  created() {
+    this.getUserChannel()
+  },
+  methods: {
+    // #1 个人频道列表获取
+    // 这里即使没有传入 token 仍然可以获取公用的频道列表
+    async getUserChannel() {
+      try {
+        // const { data: res } = await getChannel()
+        // this.userChannel = res.data.channels
+        // 多层对象解构获取数据
+        const {
+          data: {
+            data: { channels }
+          }
+        } = await getChannel()
+        this.userChannel = channels
+      } catch (error) {
+        this.$toast('个人频道获取失败')
+      }
     }
   }
 }
