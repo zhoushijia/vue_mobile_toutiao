@@ -69,7 +69,6 @@ export default {
           timestamp: this.timestamp || Date.now(), // 请求新的推荐数据传当前的时间戳，请求历史推荐传指定的时间戳
           with_top: 1 // 是否包含置顶，进入页面第一次请求时要包含置顶文章，1-包含置顶，0-不包含
         })
-        console.log(data)
 
         /*   // 模拟错误
         if (Math.random() > 0.5) {
@@ -78,7 +77,7 @@ export default {
 
         // 把数据添加到 list 数组中
         this.list.push(...data.results)
-        console.log(this.list)
+        // console.log(this.list)
         // 加载状态结束
         this.loading = false
 
