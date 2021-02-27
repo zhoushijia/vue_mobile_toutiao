@@ -21,7 +21,11 @@
         :error.sync="error"
         error-text="请求失败，点击重新加载"
       >
-        <van-cell v-for="item in list" :key="item.art_id" :title="item.title" />
+        <articles-item
+          v-for="article in list"
+          :key="article.art_id"
+          :article="article"
+        ></articles-item>
       </van-list>
     </van-pull-refresh>
   </div>
@@ -29,8 +33,12 @@
 
 <script>
 import { getArticle } from '@/api/article.js'
+import ArticlesItem from '@/components/articles-item'
 export default {
   name: 'Articles-List',
+  components: {
+    ArticlesItem
+  },
   data() {
     return {
       list: [], // 存储list列表数据
@@ -70,7 +78,7 @@ export default {
 
         // 把数据添加到 list 数组中
         this.list.push(...data.results)
-
+        console.log(this.list)
         // 加载状态结束
         this.loading = false
 

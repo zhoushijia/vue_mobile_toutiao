@@ -78,7 +78,8 @@ export default {
 
 <style lang="less" scoped>
 .home-container {
-  padding-top: 180px;
+  // 比174px多一像素 保证底边框
+  padding-top: 175px;
   padding-bottom: 100px;
   /deep/.van-nav-bar__title {
     max-width: unset;
@@ -104,16 +105,20 @@ export default {
       // left: 0;
       // right: 0;
     }
+    .van-tabs__nav {
+      padding: 0;
+      // 保证频道导航栏和其每一项的高度相同
+      height: 82px;
+    }
     .van-tab {
       border-right: 1px solid #edeff3;
       min-width: 200px;
-      height: 80px;
+      height: 82px;
       .van-tab__text {
         font-size: 27px;
         color: #777777;
       }
     }
-
     .van-tab--active .van-tab__text {
       color: #333 !important;
     }
@@ -123,9 +128,6 @@ export default {
       background: rgba(50, 150, 250, 1);
       border-radius: 3px;
       bottom: 8px;
-    }
-    .van-tabs__nav {
-      padding: 0;
     }
     .placeholder {
       flex-shrink: 0;
