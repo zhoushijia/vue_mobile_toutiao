@@ -78,7 +78,7 @@ export default {
 
 <style lang="less" scoped>
 .home-container {
-  padding-top: 92px;
+  padding-top: 180px;
   padding-bottom: 100px;
   /deep/.van-nav-bar__title {
     max-width: unset;
@@ -94,6 +94,16 @@ export default {
     }
   }
   /deep/ .channel-tabs {
+    .van-tabs__wrap {
+      position: fixed;
+      top: 92px;
+      // 这条属性必须加 不然会被覆盖
+      z-index: 1;
+      // 保证可以 左右滑动 否则不能滑动
+      width: 100%;
+      // left: 0;
+      // right: 0;
+    }
     .van-tab {
       border-right: 1px solid #edeff3;
       min-width: 200px;

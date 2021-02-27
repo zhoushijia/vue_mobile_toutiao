@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="articles-list">
     <!--
         loading 控制上拉加载更多的 loading 状态
         finished 控制数据是否加载结束
@@ -63,10 +63,10 @@ export default {
         })
         console.log(data)
 
-        // 模拟错误
+        /*   // 模拟错误
         if (Math.random() > 0.5) {
           JSON.parse('aaaaaa')
-        }
+        } */
 
         // 把数据添加到 list 数组中
         this.list.push(...data.results)
@@ -119,4 +119,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="less" scoped>
+.articles-list {
+  height: 79vh;
+  overflow: auto;
+}
+</style>
