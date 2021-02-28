@@ -49,7 +49,12 @@
       round
       :overlay="false"
     >
-      <channel-edit></channel-edit>
+      <!-- #2 向频道编辑传频道数组;频道索引;接收频道编辑传来的索引 -->
+      <channel-edit
+        :userChannel="userChannel"
+        :activeName="activeName"
+        @sendIndex="activeName = $event"
+      ></channel-edit>
     </van-popup>
   </div>
 </template>

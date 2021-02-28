@@ -8,13 +8,20 @@
       >
     </van-cell>
     <van-grid :gutter="10" class="my-grid">
+      <!-- #3 用户点击索引传递给主页 -->
       <van-grid-item
         class="grid-item"
-        v-for="value in 8"
-        :key="value"
-        text="文字"
+        v-for="(item, index) in userChannel"
+        :key="item.id"
         icon="clear"
-      />
+        @click="$emit('sendIndex', index)"
+      >
+        <span
+          slot="text"
+          :class="{ text: true, active: index === activeName }"
+          >{{ item.name }}</span
+        >
+      </van-grid-item>
     </van-grid>
     <!-- 频道推荐 -->
     <van-cell>
@@ -23,9 +30,9 @@
     <van-grid :gutter="10" class="recommend-grid">
       <van-grid-item
         class="grid-item"
-        v-for="value in 8"
-        :key="value"
-        text="文字"
+        v-for="item in recommendChannels"
+        :key="item.id"
+        :text="item.name"
         icon="plus"
       />
     </van-grid>
@@ -33,15 +40,51 @@
 </template>
 
 <script>
+import { getAllChannels } from '@/api/article'
 export default {
   name: 'ChannelEdit',
   data() {
-    return {}
+    return {
+      allChannels: []
+    }
   },
-  created() {},
+  props: {
+    // #1 获取从首页传来的频道数组
+    userChannel: {
+      type: Array,
+      required: true
+    },
+    // #2 频道索引
+    activeName: {
+      type: Number,
+      required: true
+    }
+  },
+  created() {
+    this.loadAllChannels()
+  },
   mounted() {},
-  methods: {},
-  computed: {},
+  methods: {
+    // #4 获取所有频道
+    async loadAllChannels() {
+      try {
+        const {
+          data: { data }
+        } = await getAllChannels()
+        this.allChannels = data.channels
+      } catch (error) {
+        this.$toast('获取所有频道失败')
+      }
+    }
+  },
+  computed: {
+    // 获取推荐频道
+    recommendChannels() {
+      return this.allChannels.filter(
+        channel => !this.userChannel.some(c => c.id === channel.id)
+      )
+    }
+  },
   watch: {}
 }
 </script>
