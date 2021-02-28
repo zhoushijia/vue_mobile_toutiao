@@ -34,6 +34,7 @@
         :key="item.id"
         :text="item.name"
         icon="plus"
+        @click="onAddChannel(item)"
       />
     </van-grid>
   </div>
@@ -75,6 +76,12 @@ export default {
       } catch (error) {
         this.$toast('获取所有频道失败')
       }
+    },
+    // #5 添加频道到我的频道
+    onAddChannel(channel) {
+      // 通知父亲修改
+      // 这里只要添加,会触发userChannel改变,从而影响到计算属性的改变
+      this.$emit('addChannel', channel)
     }
   },
   computed: {
