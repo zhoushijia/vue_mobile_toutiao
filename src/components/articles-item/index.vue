@@ -1,9 +1,11 @@
 <template>
   <div class="articles-item">
     <van-cell>
+      <!-- van-multi-ellipsis--l2 style内置样式 -->
       <div slot="title" class="title van-multi-ellipsis--l2">
         {{ article.title }}
       </div>
+      <!-- 下方展示内容 -->
       <div slot="label">
         <div class="cover-wrap" v-if="article.cover.type === 3">
           <div
@@ -20,6 +22,7 @@
           <span>{{ article.pubdate | relativeTime }}</span>
         </div>
       </div>
+      <!-- 右侧展示内容 -->
       <van-image
         v-if="article.cover.type === 1"
         class="right-cover"

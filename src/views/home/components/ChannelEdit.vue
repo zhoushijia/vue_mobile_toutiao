@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  name: '',
+  name: 'ChannelEdit',
   data() {
     return {}
   },
