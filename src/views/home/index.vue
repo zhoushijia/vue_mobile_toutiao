@@ -28,24 +28,45 @@
       >
         <articles-list :channel="channel"></articles-list>
       </van-tab>
+      <!-- 占位区间 -->
       <div slot="nav-right" class="placeholder"></div>
-      <div slot="nav-right" class="hamburger-btn">
+      <!-- 汉堡按钮 -->
+      <div
+        slot="nav-right"
+        class="hamburger-btn"
+        @click="isChannelEditShow = true"
+      >
         <i class="toutiao toutiao-gengduo"></i>
       </div>
     </van-tabs>
+    <!-- 频道弹出层 -->
+    <van-popup
+      v-model="isChannelEditShow"
+      closeable
+      position="bottom"
+      :style="{ height: '100%' }"
+      close-icon-position="top-left"
+      round
+      :overlay="false"
+    >
+      <channel-edit></channel-edit>
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { getChannel } from '@/api/user'
-import ArticlesList from './components/Articles-list.vue'
+import ArticlesList from './components/ArticlesList.vue'
+import ChannelEdit from './components/ChannelEdit.vue'
 export default {
   name: 'HomeIndex',
   data() {
     return {
       activeName: 0,
       // 频道数据
-      userChannel: []
+      userChannel: [],
+      // 频道弹出层
+      isChannelEditShow: false
     }
   },
   created() {
@@ -71,7 +92,8 @@ export default {
     }
   },
   components: {
-    ArticlesList
+    ArticlesList,
+    ChannelEdit
   }
 }
 </script>
