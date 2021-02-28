@@ -3,8 +3,14 @@
     <!-- 我的频道 -->
     <van-cell>
       <div slot="title" class="title-text">我的频道</div>
-      <van-button class="edit-btn" type="danger" round plain size="mini"
-        >编辑</van-button
+      <van-button
+        class="edit-btn"
+        type="danger"
+        round
+        plain
+        size="mini"
+        @click="isShow = !isShow"
+        >{{ isShow ? '完成' : '编辑' }}</van-button
       >
     </van-cell>
     <van-grid :gutter="10" class="my-grid">
@@ -13,9 +19,14 @@
         class="grid-item"
         v-for="(item, index) in userChannel"
         :key="item.id"
-        icon="clear"
         @click="$emit('sendIndex', index)"
       >
+        <!-- 点击编辑控制关闭图标的显示隐藏 -->
+        <van-icon
+          slot="icon"
+          name="clear"
+          v-show="isShow && !fixedChannels.includes(item.id)"
+        ></van-icon>
         <span
           slot="text"
           :class="{ text: true, active: index === activeName }"
@@ -46,7 +57,12 @@ export default {
   name: 'ChannelEdit',
   data() {
     return {
-      allChannels: []
+      // 所有频道
+      allChannels: [],
+      // 关闭图标的显示
+      isShow: false,
+      // ! 不需要删除的频道 采用数组可以设置多个条件
+      fixedChannels: [0]
     }
   },
   props: {
@@ -66,7 +82,7 @@ export default {
   },
   mounted() {},
   methods: {
-    // #4 获取所有频道
+    // #4 获取所有频道 计算属性得到推荐频道
     async loadAllChannels() {
       try {
         const {
@@ -77,7 +93,7 @@ export default {
         this.$toast('获取所有频道失败')
       }
     },
-    // #5 添加频道到我的频道
+    // #5 添加频道到我的频道 同时会触发推荐频道的删除
     onAddChannel(channel) {
       // 通知父亲修改
       // 这里只要添加,会触发userChannel改变,从而影响到计算属性的改变
