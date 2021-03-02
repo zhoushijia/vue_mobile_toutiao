@@ -53,9 +53,16 @@
       <channel-edit
         :userChannel="userChannel"
         :activeName="activeName"
+        @addChannel="userChannel.push($event)"
+        @updateChannel="updateMyChannel"
+      ></channel-edit>
+      <!-- <channel-edit
+        :userChannel="userChannel"
+        :activeName="activeName"
         @sendIndex="activeName = $event"
         @addChannel="userChannel.push($event)"
-      ></channel-edit>
+        @removeChannel="remove"
+      ></channel-edit> -->
     </van-popup>
   </div>
 </template>
@@ -95,6 +102,16 @@ export default {
       } catch (error) {
         this.$toast('个人频道获取失败')
       }
+    },
+    // 删除我的频道
+    /* remove(channelId) {
+      const i = this.userChannel.findIndex(item => item.id === channelId)
+      this.userChannel.splice(i, 1)
+    } */
+    // 选中或删除我的频道 isEditShow
+    updateMyChannel(i, isEditShow = true) {
+      this.activeName = i
+      this.isChannelEditShow = isEditShow
     }
   },
   components: {

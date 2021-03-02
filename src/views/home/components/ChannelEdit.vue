@@ -9,8 +9,8 @@
         round
         plain
         size="mini"
-        @click="isShow = !isShow"
-        >{{ isShow ? '完成' : '编辑' }}</van-button
+        @click="isEditShow = !isEditShow"
+        >{{ isEditShow ? '完成' : '编辑' }}</van-button
       >
     </van-cell>
     <van-grid :gutter="10" class="my-grid">
@@ -19,13 +19,13 @@
         class="grid-item"
         v-for="(item, index) in userChannel"
         :key="item.id"
-        @click="$emit('sendIndex', index)"
+        @click="onEditChannel(item, index)"
       >
         <!-- 点击编辑控制关闭图标的显示隐藏 -->
         <van-icon
           slot="icon"
           name="clear"
-          v-show="isShow && !fixedChannels.includes(item.id)"
+          v-show="isEditShow && !fixedChannels.includes(item.id)"
         ></van-icon>
         <span
           slot="text"
@@ -60,7 +60,7 @@ export default {
       // 所有频道
       allChannels: [],
       // 关闭图标的显示
-      isShow: false,
+      isEditShow: false,
       // ! 不需要删除的频道 采用数组可以设置多个条件
       fixedChannels: [0]
     }
@@ -98,6 +98,23 @@ export default {
       // 通知父亲修改
       // 这里只要添加,会触发userChannel改变,从而影响到计算属性的改变
       this.$emit('addChannel', channel)
+    },
+    // 编辑频道
+    onEditChannel(channel, index) {
+      if (this.isEditShow) {
+        // 当编辑时不能选择频道   删除频道
+        // 推荐不能删除  即 固定频道不删除
+        if (index === 0) return
+        // this.$emit('removeChannel', channel.id)
+        this.userChannel.splice(index, 1)
+        // 解决splice方法导致的index角标塌陷，引发的高亮问题
+        if (index <= this.activeName) {
+          this.$emit('updateChannel', this.activeName - 1)
+        }
+      } else {
+        // this.$emit('sendIndex', index)
+        this.$emit('updateChannel', index, false)
+      }
     }
   },
   computed: {

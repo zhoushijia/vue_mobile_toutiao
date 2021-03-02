@@ -77,7 +77,7 @@ export default {
 
         // 把数据添加到 list 数组中
         this.list.push(...data.results)
-        // console.log(this.list)
+        console.log(this.list)
         // 加载状态结束
         this.loading = false
 
