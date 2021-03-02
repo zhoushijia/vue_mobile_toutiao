@@ -9,6 +9,7 @@
         size="small"
         round
         icon="search"
+        :to="{ name: 'search', query: { redirect: '/' } }"
         >搜索</van-button
       >
     </van-nav-bar>
