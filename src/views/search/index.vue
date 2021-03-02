@@ -16,7 +16,11 @@
     <!-- 搜索结果 -->
     <search-results v-if="isResultsShow"></search-results>
     <!-- 搜索联想建议 -->
-    <search-suggestion v-else-if="searchText"></search-suggestion>
+    <!-- 联想建议的请求可以在父组件执行  也可以在子组件中进行 子组件进行更能实现分离的思想 -->
+    <search-suggestion
+      v-else-if="searchText"
+      :searchText="searchText"
+    ></search-suggestion>
     <!-- 搜索历史 -->
     <search-history v-else></search-history>
   </div>
