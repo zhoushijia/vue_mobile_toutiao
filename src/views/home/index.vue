@@ -53,7 +53,7 @@
       <channel-edit
         :userChannel="userChannel"
         :activeName="activeName"
-        @addChannel="userChannel.push($event)"
+        @addChannel="onAddChannels"
         @updateChannel="updateMyChannel"
       ></channel-edit>
       <!-- <channel-edit
@@ -68,9 +68,11 @@
 </template>
 
 <script>
-import { getChannel } from '@/api/user'
+import { getMyChannels, saveChannel } from '@/api/channel'
 import ArticlesList from './components/ArticlesList.vue'
 import ChannelEdit from './components/ChannelEdit.vue'
+import { mapState } from 'vuex'
+import { setToken, getToken } from '@/utils/storage'
 export default {
   name: 'HomeIndex',
   data() {
@@ -85,19 +87,41 @@ export default {
   created() {
     this.getUserChannel()
   },
+  computed: {
+    ...mapState(['user'])
+  },
   methods: {
     // #1 个人频道列表获取
     // 这里即使没有传入 token 仍然可以获取公用的频道列表
     async getUserChannel() {
+      let channels = null
       try {
-        // const { data: res } = await getChannel()
-        // this.userChannel = res.data.channels
-        // 多层对象解构获取数据
-        const {
-          data: {
-            data: { channels }
+        // 登录
+        if (this.user) {
+          // const { data: res } = await getAllChannel()
+          // this.userChannel = res.data.channels
+          // 多层对象解构获取数据
+          const {
+            data: {
+              data: { channel }
+            }
+          } = await getMyChannels()
+          channels = channel
+        } else {
+          // 未登录
+          const channel = getToken('TOUTIAO_MYCHANNEL')
+          if (channel) {
+            channels = channel
+          } else {
+            // 没有本地存储
+            const {
+              data: {
+                data: { channel }
+              }
+            } = await getMyChannels()
+            channels = channel
           }
-        } = await getChannel()
+        }
         this.userChannel = channels
       } catch (error) {
         this.$toast('个人频道获取失败')
@@ -112,6 +136,25 @@ export default {
     updateMyChannel(i, isEditShow = true) {
       this.activeName = i
       this.isChannelEditShow = isEditShow
+    },
+    // 添加到我的频道
+    async onAddChannels(channel) {
+      this.userChannel.push(channel)
+
+      // 登录状态，token存在
+      if (this.user) {
+        try {
+          await saveChannel({
+            id: channel.id,
+            seq: this.userChannel.length
+          })
+        } catch (error) {
+          this.$toast('添加频道失败')
+        }
+      } else {
+        // 未登录状态下
+        setToken('TOUTIAO_MYCHANNEL', this.userChannel)
+      }
     }
   },
   components: {

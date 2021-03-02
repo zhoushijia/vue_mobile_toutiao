@@ -52,7 +52,9 @@
 </template>
 
 <script>
-import { getAllChannels } from '@/api/article'
+import { getAllChannels, deleteChannel } from '@/api/channel'
+import { setToken } from '@/utils/storage'
+import { mapState } from 'vuex'
 export default {
   name: 'ChannelEdit',
   data() {
@@ -99,22 +101,36 @@ export default {
       // 这里只要添加,会触发userChannel改变,从而影响到计算属性的改变
       this.$emit('addChannel', channel)
     },
-    // 编辑频道
+    // #6 编辑频道
     onEditChannel(channel, index) {
       if (this.isEditShow) {
         // 当编辑时不能选择频道   删除频道
         // 推荐不能删除  即 固定频道不删除
-        if (index === 0) return
+        if (this.fixedChannels.includes(channel.id)) return
         // this.$emit('removeChannel', channel.id)
+        // 子组件操作父组件的数据
         this.userChannel.splice(index, 1)
         // 解决splice方法导致的index角标塌陷，引发的高亮问题
         if (index <= this.activeName) {
           this.$emit('updateChannel', this.activeName - 1)
         }
+        // 发请求 后端删除
+        this.removeChannel(channel.id)
       } else {
+        // 选择频道
         // this.$emit('sendIndex', index)
         this.$emit('updateChannel', index, false)
       }
+    },
+    async removeChannel(channelId) {
+      try {
+        if (this.user) {
+          await deleteChannel(channelId)
+        } else {
+          // 未登录状态下
+          setToken('TOUTIAO_MYCHANNEL', this.userChannel)
+        }
+      } catch (error) {}
     }
   },
   computed: {
@@ -123,7 +139,8 @@ export default {
       return this.allChannels.filter(
         channel => !this.userChannel.some(c => c.id === channel.id)
       )
-    }
+    },
+    ...mapState(['user'])
   },
   watch: {}
 }
