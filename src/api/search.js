@@ -9,3 +9,11 @@ export const getSearchSuggestions = q =>
       q
     }
   })
+
+// 联想建议
+export const getSearchResults = params =>
+  request({
+    method: 'GET',
+    url: '/app/v1_0/search',
+    params
+  })
