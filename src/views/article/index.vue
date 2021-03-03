@@ -89,8 +89,8 @@ export default {
   props: {
     // ! 解耦 保证不止路由跳转 增加了组件的复用性
     articleId: {
-      // ? 1.通过url过来的时字符串，2.通过路由跳转的是数字
-      type: [Number, String],
+      // ? 1.通过url过来的时字符串,2.通过路由跳转的是数字,3.bigint转换后是对象
+      type: [Number, String, Object],
       required: true
     }
   },
@@ -107,6 +107,7 @@ export default {
     // #1 获取文章详情
     async loadArticleDetails() {
       try {
+        console.log(this.articleId)
         // ! 大数字问题 axios会自动JSON.parse转化
         const { data } = await getArticleDetails(this.articleId)
         console.log(data)

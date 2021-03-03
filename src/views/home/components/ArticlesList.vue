@@ -22,8 +22,8 @@
         error-text="请求失败，点击重新加载"
       >
         <articles-item
-          v-for="article in list"
-          :key="article.art_id"
+          v-for="(article, index) in list"
+          :key="index"
           :article="article"
         ></articles-item>
       </van-list>
