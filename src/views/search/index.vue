@@ -76,7 +76,7 @@ export default {
   },
   computed: {},
   watch: {
-    // 只要历史数据变化，则触发存储
+    // 只要历史数据变化，则触发存储 数据持久化
     searchHistories(val) {
       setToken('TOUTIAO_SEARCH_HISTORIES', val)
     }

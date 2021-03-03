@@ -17,6 +17,13 @@ const routes = [
     component: () => import('@/views/search')
   },
   {
+    // /article/:articleId? 表示还可以访问/article
+    path: '/article/:articleId',
+    name: 'article',
+    // 会直接去寻找login目录下的 index 所以可以省略
+    component: () => import('@/views/article')
+  },
+  {
     path: '/',
     // name: 'layout', // 默认路径是home页面，所以这个name没啥意义
     component: () => import('@/views/layout'),
