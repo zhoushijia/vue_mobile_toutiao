@@ -21,7 +21,10 @@ const routes = [
     path: '/article/:articleId',
     name: 'article',
     // 会直接去寻找login目录下的 index 所以可以省略
-    component: () => import('@/views/article')
+    component: () => import('@/views/article'),
+    // ! 解耦
+    // 打开props传参
+    props: true
   },
   {
     path: '/',
