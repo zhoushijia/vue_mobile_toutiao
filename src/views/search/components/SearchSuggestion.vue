@@ -1,11 +1,9 @@
 <template>
   <div class="search-suggestion">
-    <van-cell
-      :title="text"
-      v-for="(text, index) in suggestions"
-      :key="index"
-      icon="search"
-    />
+    <van-cell v-for="(text, index) in suggestions" :key="index" icon="search">
+      <!-- #2 搜索文字高亮 -->
+      <span slot="title" v-html="highlight(text)"></span>
+    </van-cell>
   </div>
 </template>
 
@@ -28,6 +26,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    // 发起请求,获取联想建议
     async loadSearchSuggestions(val) {
       try {
         const {
@@ -37,11 +36,23 @@ export default {
       } catch (error) {
         this.$toast('联想建议获取失败')
       }
+    },
+    // 搜索文字高亮
+    highlight(text) {
+      // 变量设置为正则规则
+      const reg = new RegExp(this.searchText, 'gi')
+      return text.replace(reg, `<span class="active">${this.searchText}</span>`)
+      // 或者
+      /* return text.replace(
+        // eval 把一个字符串当作一个JavaScript表达式一样去执行
+        eval('/' + this.searchText + '/gi'),
+        `<span class="active">${this.searchText}</span>`
+      ) */
     }
   },
   computed: {},
   watch: {
-    // 监听器的完整写法
+    // #1 监听器的完整写法
     searchText: {
       // 优化：介绍发请求的次数。防抖
       handler: debounce(function(value) {
@@ -55,4 +66,10 @@ export default {
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.search-suggestion {
+  /deep/ span.active {
+    color: #5babfb;
+  }
+}
+</style>
