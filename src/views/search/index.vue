@@ -14,12 +14,16 @@
       />
     </form>
     <!-- 搜索结果 -->
-    <search-results v-if="isResultsShow"></search-results>
+    <search-results
+      v-if="isResultsShow"
+      :searchText="searchText"
+    ></search-results>
     <!-- 搜索联想建议 -->
     <!-- 联想建议的请求可以在父组件执行  也可以在子组件中进行 子组件进行更能实现分离的思想 -->
     <search-suggestion
       v-else-if="searchText"
       :searchText="searchText"
+      @search="onSearch"
     ></search-suggestion>
     <!-- 搜索历史 -->
     <search-history v-else></search-history>
@@ -46,9 +50,11 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    // 两个事件触发onSearch 1.联想建议;2.回车/点击搜索
     onSearch(val) {
+      // 当点击联想建议时，将对应的联想建议值传输过来
+      this.searchText = val
       this.isResultsShow = true
-      console.log(val)
     },
     onCancel() {
       this.$router.push(this.$route.query.redirect || '/')
