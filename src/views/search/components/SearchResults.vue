@@ -33,8 +33,8 @@ export default {
       loading: false,
       finished: false,
       error: false,
-      page: 1,
-      per_page: 15
+      page: 1, // 接口要求页码
+      per_page: 15 // 接口每页条数
     }
   },
   created() {},

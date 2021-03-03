@@ -26,7 +26,12 @@
       @search="onSearch"
     ></search-suggestion>
     <!-- 搜索历史 -->
-    <search-history v-else></search-history>
+    <search-history
+      :searchHistories="searchHistories"
+      v-else
+      @search="onSearch"
+      @clear-search-histories="searchHistories = []"
+    ></search-history>
   </div>
 </template>
 
@@ -34,6 +39,7 @@
 import SearchHistory from './components/SearchHistory'
 import SearchSuggestion from './components/SearchSuggestion'
 import SearchResults from './components/SearchResults'
+import { getToken, setToken } from '@/utils/storage'
 export default {
   name: 'Search',
   components: {
@@ -44,7 +50,8 @@ export default {
   data() {
     return {
       searchText: '',
-      isResultsShow: false // 是否显示搜索结果的条件
+      isResultsShow: false, // 是否显示搜索结果的条件
+      searchHistories: getToken('TOUTIAO_SEARCH_HISTORIES') || [] // 历史记录数据
     }
   },
   created() {},
@@ -55,13 +62,25 @@ export default {
       // 当点击联想建议时，将对应的联想建议值传输过来
       this.searchText = val
       this.isResultsShow = true
+      // 存储搜索记录
+      // 不要重复数据，最新的数据在最前面
+      // 找到重复数据删除
+      const i = this.searchHistories.indexOf(val)
+      if (i !== -1) this.searchHistories.splice(i, 1)
+      // 添加到最前面
+      this.searchHistories.unshift(val)
     },
     onCancel() {
       this.$router.push(this.$route.query.redirect || '/')
     }
   },
   computed: {},
-  watch: {}
+  watch: {
+    // 只要历史数据变化，则触发存储
+    searchHistories(val) {
+      setToken('TOUTIAO_SEARCH_HISTORIES', val)
+    }
+  }
 }
 </script>
 
