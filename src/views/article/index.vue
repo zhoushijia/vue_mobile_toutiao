@@ -30,20 +30,39 @@
           <div slot="label" class="publish-date">
             {{ articleInfo.pubdate | relativeTime }}
           </div>
-          <van-button
+          <!-- <van-button
             class="follow-btn"
             type="info"
             color="#3296fa"
             round
+            :loading="followedLoading"
             size="small"
             icon="plus"
+            v-if="!articleInfo.is_followed"
+            @click="onFollowClick"
             >关注</van-button
           >
-          <!-- <van-button
+          <van-button
+            v-else
             class="follow-btn"
             round
+            :loading="followedLoading"
             size="small"
-          >已关注</van-button> -->
+            @click="onFollowClick"
+            >取消关注</van-button
+          > -->
+          <!-- 数据绑定和事件监听实现数据双向绑定 -->
+          <!-- <followed-user
+            :isFollowed="articleInfo.is_followed"
+            :autId="articleInfo.aut_id"
+            @update-is_followed="articleInfo.is_followed = $event"
+          ></followed-user> -->
+          <!-- 组件v-model -->
+          <followed-user
+            v-model="articleInfo.is_followed"
+            :autId="articleInfo.aut_id"
+            @update-is_followed="articleInfo.is_followed = $event"
+          ></followed-user>
         </van-cell>
         <!-- /用户信息 -->
 
@@ -68,7 +87,9 @@
       <div class="error-wrap" v-else>
         <van-icon name="failure" />
         <p class="text">内容加载失败！</p>
-        <van-button class="retry-btn">点击重试</van-button>
+        <van-button class="retry-btn" @click="loadArticleDetails"
+          >点击重试</van-button
+        >
       </div>
       <!-- /加载失败：其它未知错误（例如网络原因或服务端异常） -->
     </div>
@@ -91,10 +112,11 @@
 import { getArticleDetails } from '@/api/article'
 // vant 的 ImagePreview 相当于一个方法
 import { ImagePreview } from 'vant'
+import FollowedUser from '@/components/followed-user'
 
 export default {
   name: 'ArticleIndex',
-  components: {},
+  components: { FollowedUser },
   props: {
     // ! 解耦 保证不止路由跳转 增加了组件的复用性
     articleId: {
@@ -108,6 +130,7 @@ export default {
       articleInfo: {},
       loading: true, // 加载状态显示条件
       errStatus: 0 // 资源是否找到
+      // followedLoading: false // 点击关注按钮后的加载状态
     }
   },
   computed: {},
@@ -141,7 +164,7 @@ export default {
         // console.log(data)
         this.articleInfo = data
       } catch (err) {
-        if (err.response.status === 404) {
+        if (err.response && err.response.status === 404) {
           this.errStatus = 404
         }
       }
@@ -165,6 +188,26 @@ export default {
         }
       })
     }
+    // 关注与取关
+    /*  async onFollowClick() {
+      this.followedLoading = true
+      try {
+        console.log(233)
+        if (this.articleInfo.is_followed) {
+          await isUnfollowed(this.articleInfo.aut_id)
+          console.log(111)
+        } else {
+          await isFollowed(this.articleInfo.aut_id)
+          console.log(222)
+        }
+        this.articleInfo.is_followed = !this.articleInfo.is_followed
+        console.log(this.articleInfo.is_followed)
+      } catch (err) {
+        this.$toast('关注相关操作失败')
+        console.log(err)
+      }
+      this.followedLoading = false
+    } */
   }
 }
 </script>
