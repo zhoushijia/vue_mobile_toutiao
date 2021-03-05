@@ -52,17 +52,17 @@
             >取消关注</van-button
           > -->
           <!-- 数据绑定和事件监听实现数据双向绑定 -->
-          <!-- <followed-user
+          <!-- <follow-user
             :isFollowed="articleInfo.is_followed"
             :autId="articleInfo.aut_id"
             @update-is_followed="articleInfo.is_followed = $event"
-          ></followed-user> -->
+          ></follow-user> -->
           <!-- 组件v-model -->
-          <followed-user
+          <follow-user
             v-model="articleInfo.is_followed"
             :autId="articleInfo.aut_id"
             @update-is_followed="articleInfo.is_followed = $event"
-          ></followed-user>
+          ></follow-user>
         </van-cell>
         <!-- /用户信息 -->
 
@@ -79,8 +79,16 @@
             >写评论</van-button
           >
           <van-icon name="comment-o" badge="123" color="#777" />
-          <collect-article v-model="articleInfo.is_collected" />
-          <van-icon color="#777" name="good-job-o" />
+          <collect-article
+            v-model="articleInfo.is_collected"
+            :artId="articleInfo.art_id"
+            @update-is_colleted="articleInfo.is_collected = $event"
+          />
+          <like-article
+            v-model="articleInfo.attitude"
+            :artId="articleInfo.art_id"
+            @update-is_like="articleInfo.attitude = $event"
+          />
           <van-icon name="share" color="#777777"></van-icon>
         </div>
         <!-- /底部区域 -->
@@ -88,7 +96,7 @@
       <!-- /加载完成-文章详情 -->
 
       <!-- 加载失败：404 -->
-      <div class="error-wrap" v-else-if="errStatus">
+      <div class="error-wrap" v-else-if="errStatus === 404">
         <van-icon name="failure" />
         <p class="text">该资源不存在或已删除！</p>
       </div>
@@ -111,12 +119,13 @@
 import { getArticleDetails } from '@/api/article'
 // vant 的 ImagePreview 相当于一个方法
 import { ImagePreview } from 'vant'
-import FollowedUser from '@/components/followed-user'
+import FollowUser from '@/components/follow-user'
 import CollectArticle from '@/components/collect-article'
+import LikeArticle from '@/components/like-article'
 
 export default {
   name: 'ArticleIndex',
-  components: { FollowedUser, CollectArticle },
+  components: { FollowUser, CollectArticle, LikeArticle },
   props: {
     // ! 解耦 保证不止路由跳转 增加了组件的复用性
     articleId: {
@@ -151,18 +160,19 @@ export default {
           data: { data }
         } = await getArticleDetails(this.articleId)
 
+        // 模拟非404请求错误
+        /* if (Math.random() > 0.8) {
+          JSON.parse('aaaaaa')
+        } */
+        // console.log(data)
+        this.articleInfo = data
+
         // ! 关闭加载，使文章信息渲染后才能拿到元素节点
         // 简单粗暴的方法一
         // setTimeout(this.imgPreview, 0)
         // 或者 推荐方法二
         this.loading = false
         this.$nextTick(this.imgPreview)
-        // 模拟非404请求错误
-        /*  if (Math.random() > 0.5) {
-          JSON.parse('aaaaaa')
-        } */
-        // console.log(data)
-        this.articleInfo = data
       } catch (err) {
         if (err.response && err.response.status === 404) {
           this.errStatus = 404

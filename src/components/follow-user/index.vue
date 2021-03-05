@@ -25,7 +25,7 @@
 <script>
 import { isFollowed, isUnfollowed } from '@/api/article'
 export default {
-  name: 'FollowedUser',
+  name: 'FollowUser',
   model: {
     prop: 'isFollowed',
     event: 'update-is_followed'

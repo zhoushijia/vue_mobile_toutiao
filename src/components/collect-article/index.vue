@@ -1,8 +1,13 @@
 <template>
-  <van-icon color="#777" :name="isCollected ? 'star' : 'star-o'" :class="{}" />
+  <van-icon
+    :name="isCollected ? 'star' : 'star-o'"
+    :class="{ 'add-collet-success': isCollected }"
+    @click="isCollectClick"
+  />
 </template>
 
 <script>
+import { deleteCollect, addCollect } from '@/api/article'
 export default {
   name: 'CollectArticle',
   model: {
@@ -13,17 +18,45 @@ export default {
     isCollected: {
       type: Boolean,
       required: true
+    },
+    artId: {
+      type: [String, Boolean, Object],
+      required: true
     }
   },
   data() {
-    return {}
+    return {
+      loading: false
+    }
   },
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    async isCollectClick() {
+      // this.loading = true
+      try {
+        if (this.isCollected) {
+          await deleteCollect(this.artId)
+        } else {
+          await addCollect(this.artId)
+        }
+        this.$emit('update-is_colleted', !this.isCollected)
+        this.$nextTick(() =>
+          this.$toast(this.isCollected ? '收藏成功' : '取消收藏')
+        )
+      } catch (err) {
+        this.$toast.fail('收藏操作失败')
+      }
+      // this.loading = false
+    }
+  },
   computed: {},
   watch: {}
 }
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.add-collet-success {
+  color: skyblue;
+}
+</style>
