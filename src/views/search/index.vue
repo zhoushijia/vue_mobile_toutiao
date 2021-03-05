@@ -59,13 +59,14 @@ export default {
   methods: {
     // 两个事件触发onSearch 1.联想建议;2.回车/点击搜索
     onSearch(val) {
+      if (!val.trim()) return (this.searchText = '')
       // 当点击联想建议时，将对应的联想建议值传输过来
       this.searchText = val
       this.isResultsShow = true
       // 存储搜索记录
       // 不要重复数据，最新的数据在最前面
       // 找到重复数据删除
-      const i = this.searchHistories.indexOf(val)
+      const i = this.searchHistories.indexOf()
       if (i !== -1) this.searchHistories.splice(i, 1)
       // 添加到最前面
       this.searchHistories.unshift(val)

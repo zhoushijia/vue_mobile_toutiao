@@ -103,11 +103,9 @@ export default {
           // this.userChannel = res.data.channels
           // 多层对象解构获取数据
           const {
-            data: {
-              data: { channel }
-            }
+            data: { data }
           } = await getMyChannels()
-          channels = channel
+          channels = data.channels
         } else {
           // 未登录
           const channel = getToken('TOUTIAO_MYCHANNEL')
@@ -116,11 +114,10 @@ export default {
           } else {
             // 没有本地存储
             const {
-              data: {
-                data: { channel }
-              }
+              data: { data }
             } = await getMyChannels()
-            channels = channel
+            // console.log(data)
+            channels = data.channels
           }
         }
         this.userChannel = channels
@@ -141,7 +138,6 @@ export default {
     // 添加到我的频道
     async onAddChannels(channel) {
       this.userChannel.push(channel)
-
       // 登录状态，token存在
       if (this.user) {
         try {

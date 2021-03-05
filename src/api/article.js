@@ -13,5 +13,6 @@ export const getArticle = params =>
 export const getArticleDetails = articleId =>
   request({
     method: 'GET',
+    // 这里 articleId 对象在字符串拼接的时候自动调用toString方法转换成字符串
     url: `/app/v1_0/articles/${articleId}`
   })

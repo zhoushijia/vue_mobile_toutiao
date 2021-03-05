@@ -6,15 +6,15 @@
 
     <div class="main-wrap">
       <!-- 加载中 -->
-      <div class="loading-wrap">
+      <div class="loading-wrap" v-if="loading">
         <van-loading color="#3296fa" vertical>加载中</van-loading>
       </div>
       <!-- /加载中 -->
 
       <!-- 加载完成-文章详情 -->
-      <div class="article-detail">
+      <div class="article-detail" v-else-if="articleInfo.title">
         <!-- 文章标题 -->
-        <h1 class="article-title">这是文章标题</h1>
+        <h1 class="article-title">{{ articleInfo.title }}</h1>
         <!-- /文章标题 -->
 
         <!-- 用户信息 -->
@@ -24,10 +24,12 @@
             slot="icon"
             round
             fit="cover"
-            src="https://img.yzcdn.cn/vant/cat.jpeg"
+            :src="articleInfo.aut_photo"
           />
-          <div slot="title" class="user-name">黑马头条号</div>
-          <div slot="label" class="publish-date">14小时前</div>
+          <div slot="title" class="user-name">{{ articleInfo.aut_name }}</div>
+          <div slot="label" class="publish-date">
+            {{ articleInfo.pubdate | relativeTime }}
+          </div>
           <van-button
             class="follow-btn"
             type="info"
@@ -46,20 +48,20 @@
         <!-- /用户信息 -->
 
         <!-- 文章内容 -->
-        <div class="article-content">这是文章内容</div>
+        <div class="article-content" v-html="articleInfo.content"></div>
         <van-divider>正文结束</van-divider>
       </div>
       <!-- /加载完成-文章详情 -->
 
       <!-- 加载失败：404 -->
-      <div class="error-wrap">
+      <div class="error-wrap" v-else-if="errStatus">
         <van-icon name="failure" />
         <p class="text">该资源不存在或已删除！</p>
       </div>
       <!-- /加载失败：404 -->
 
       <!-- 加载失败：其它未知错误（例如网络原因或服务端异常） -->
-      <div class="error-wrap">
+      <div class="error-wrap" v-else>
         <van-icon name="failure" />
         <p class="text">内容加载失败！</p>
         <van-button class="retry-btn">点击重试</van-button>
@@ -95,7 +97,11 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      articleInfo: {},
+      loading: true, // 加载状态显示条件
+      errStatus: 0 // 资源是否找到
+    }
   },
   computed: {},
   watch: {},
@@ -106,14 +112,23 @@ export default {
   methods: {
     // #1 获取文章详情
     async loadArticleDetails() {
+      // 开始时 显示加载状态
+      this.loading = true
       try {
-        console.log(this.articleId)
+        // console.log(this.articleId)
         // ! 大数字问题 axios会自动JSON.parse转化
-        const { data } = await getArticleDetails(this.articleId)
-        console.log(data)
+        const {
+          data: { data }
+        } = await getArticleDetails(this.articleId)
+        // console.log(data)
+        this.articleInfo = data
       } catch (err) {
-        console.log('获取文章详情失败,请重新加载', err)
+        if (err.response.status === 404) {
+          this.errStatus = 404
+        }
       }
+      // 结束关闭加载状态
+      this.loading = false
     }
   }
 }
