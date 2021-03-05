@@ -1,7 +1,7 @@
 <template>
   <van-icon
     :name="isLike === 1 ? 'good-job' : 'good-job-o'"
-    :class="{ 'add-like-success': isLike === 1 }"
+    :color="isLike === 1 ? 'red' : '#777'"
     @click="isLikeClick"
   />
 </template>
@@ -34,16 +34,23 @@ export default {
   methods: {
     async isLikeClick() {
       // this.loading = true
-      this.isLike = -1
+      this.$toast({
+        message: '加载中...',
+        forbidClick: true,
+        duration: 0
+      })
+      let flag = -1
       try {
-        if (this.isLike) {
+        if (this.isLike === 1) {
           await deleteLike(this.artId)
         } else {
           await addLike(this.artId)
-          this.isLike = 1
+          // ! 这种写法是错误的  子组件不能修改父组件传来的值
+          // this.isLike=1
+          flag = 1
         }
-        this.$emit('update-is_colleted', this.isLike)
-        this.$toast(this.isLike === 1 ? '点赞成功' : '取消点赞')
+        this.$emit('update-is_colleted', flag)
+        this.$toast(flag === 1 ? '点赞成功' : '取消点赞')
       } catch (err) {
         this.$toast.fail('点赞操作失败')
       }
@@ -55,8 +62,4 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-.add-like-success {
-  color: skyblue;
-}
-</style>
+<style lang="less" scoped></style>

@@ -1,7 +1,7 @@
 <template>
   <van-icon
     :name="isCollected ? 'star' : 'star-o'"
-    :class="{ 'add-collet-success': isCollected }"
+    :color="value ? '#ffa500' : '#777'"
     @click="isCollectClick"
   />
 </template>
@@ -34,6 +34,11 @@ export default {
   methods: {
     async isCollectClick() {
       // this.loading = true
+      this.$toast({
+        message: '加载中...',
+        forbidClick: true,
+        duration: 0
+      })
       try {
         if (this.isCollected) {
           await deleteCollect(this.artId)
@@ -55,8 +60,4 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-.add-collet-success {
-  color: skyblue;
-}
-</style>
+<style lang="less" scoped></style>
