@@ -48,7 +48,11 @@
         <!-- /用户信息 -->
 
         <!-- 文章内容 -->
-        <div class="article-content" v-html="articleInfo.content"></div>
+        <div
+          class="article-content markdown-body"
+          ref="article-content"
+          v-html="articleInfo.content"
+        ></div>
         <van-divider>正文结束</van-divider>
       </div>
       <!-- /加载完成-文章详情 -->
@@ -85,6 +89,9 @@
 
 <script>
 import { getArticleDetails } from '@/api/article'
+// vant 的 ImagePreview 相当于一个方法
+import { ImagePreview } from 'vant'
+
 export default {
   name: 'ArticleIndex',
   components: {},
@@ -120,6 +127,17 @@ export default {
         const {
           data: { data }
         } = await getArticleDetails(this.articleId)
+
+        // ! 关闭加载，使文章信息渲染后才能拿到元素节点
+        // 简单粗暴的方法一
+        // setTimeout(this.imgPreview, 0)
+        // 或者 推荐方法二
+        this.loading = false
+        this.$nextTick(this.imgPreview)
+        // 模拟非404请求错误
+        /*  if (Math.random() > 0.5) {
+          JSON.parse('aaaaaa')
+        } */
         // console.log(data)
         this.articleInfo = data
       } catch (err) {
@@ -129,12 +147,31 @@ export default {
       }
       // 结束关闭加载状态
       this.loading = false
+    },
+    // ! 图片预览
+    imgPreview() {
+      // 拿到article-content标签 并且 拿到其中的imgDom标签
+      const oImgs = this.$refs['article-content'].querySelectorAll('img')
+      const images = []
+      // 遍历imgDom
+      oImgs.forEach((img, index) => {
+        images.push(img.src)
+        // 给每个imgDom注册点击事件
+        img.onclick = function() {
+          ImagePreview({
+            images,
+            startPosition: index
+          })
+        }
+      })
     }
   }
 }
 </script>
 
 <style scoped lang="less">
+@import './github-markdown.css';
+
 .article-container {
   .main-wrap {
     position: fixed;

@@ -21,13 +21,15 @@ module.exports = {
         需要根据css文件是自定义css还是vant的css文件来设置不同的标准。
         rootValue可以是一个函数,形参为css文件对象并可以拿到文件路径file
       */
-      rootValue ({ file }) {
+      rootValue({ file }) {
         // return file.indexOf('vant') !== -1 ? 37.5 : 75
         // 或
         return file.includes('vant') ? 37.5 : 75
       },
       // 配置要转换的css属性,*表示所有
-      propList: ['*']
+      propList: ['*'],
+      // github-markdown.css文件不做rem适配
+      exclude: 'github-markdown'
     }
   }
 }
