@@ -61,8 +61,10 @@ export default {
         }
         this.$emit('update-is_followed', !this.isFollowed)
       } catch (err) {
-        this.$toast('关注相关操作失败')
-        console.log(err)
+        if (err.response && err.response.status === 400) {
+          return this.$toast.fail('不能关注自己')
+        }
+        this.$toast.fail('操作失败')
       }
       this.loading = false
     }
