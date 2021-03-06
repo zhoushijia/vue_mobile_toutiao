@@ -73,12 +73,21 @@
           v-html="articleInfo.content"
         ></div>
         <van-divider>正文结束</van-divider>
+        <!-- 文章内容 -->
+
+        <!-- 评论列表 -->
+        <article-comment
+          :artId="articleInfo.art_id"
+          @update-comment-total="commentTotalCount = $event"
+        />
+        <!-- 评论列表 -->
+
         <!-- 底部区域 -->
         <div class="article-bottom">
           <van-button class="comment-btn" type="default" round size="small"
             >写评论</van-button
           >
-          <van-icon name="comment-o" badge="123" color="#777" />
+          <van-icon name="comment-o" :badge="commentTotalCount" color="#777" />
           <collect-article
             v-model="articleInfo.is_collected"
             :artId="articleInfo.art_id"
@@ -122,10 +131,11 @@ import { ImagePreview } from 'vant'
 import FollowUser from '@/components/follow-user'
 import CollectArticle from '@/components/collect-article'
 import LikeArticle from '@/components/like-article'
+import ArticleComment from './components/article-comment.vue'
 
 export default {
   name: 'ArticleIndex',
-  components: { FollowUser, CollectArticle, LikeArticle },
+  components: { FollowUser, CollectArticle, LikeArticle, ArticleComment },
   props: {
     // ! 解耦 保证不止路由跳转 增加了组件的复用性
     articleId: {
@@ -138,8 +148,9 @@ export default {
     return {
       articleInfo: {},
       loading: true, // 加载状态显示条件
-      errStatus: 0 // 资源是否找到
+      errStatus: 0, // 资源是否找到
       // followedLoading: false // 点击关注按钮后的加载状态
+      commentTotalCount: 0
     }
   },
   computed: {},

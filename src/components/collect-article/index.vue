@@ -1,7 +1,7 @@
 <template>
   <van-icon
     :name="isCollected ? 'star' : 'star-o'"
-    :color="value ? '#ffa500' : '#777'"
+    :color="isCollected ? '#ffa500' : '#777'"
     @click="isCollectClick"
   />
 </template>
@@ -20,7 +20,7 @@ export default {
       required: true
     },
     artId: {
-      type: [String, Boolean, Object],
+      type: [String, Number, Object],
       required: true
     }
   },

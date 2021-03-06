@@ -20,7 +20,7 @@ export default {
       required: true
     },
     artId: {
-      type: [String, Boolean, Object],
+      type: [String, Number, Object],
       required: true
     }
   },
