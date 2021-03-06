@@ -2,7 +2,7 @@
   <div class="comment-post">
     <van-field
       class="post-field"
-      v-model="message"
+      v-model.trim="message"
       rows="2"
       autosize
       type="textarea"
@@ -10,7 +10,9 @@
       placeholder="请输入留言"
       show-word-limit
     />
-    <van-button class="post-btn" @click="postComment">发布</van-button>
+    <van-button class="post-btn" :disabled="!message" @click="postComment"
+      >发布</van-button
+    >
   </div>
 </template>
 
@@ -20,9 +22,13 @@ export default {
   name: 'CommentPost',
   components: {},
   props: {
-    artId: {
+    targetId: {
       type: [Number, String, Object],
       required: true
+    },
+    artId: {
+      type: [Number, String, Object],
+      default: () => null
     }
   },
   data() {
@@ -47,12 +53,14 @@ export default {
         const {
           data: { data }
         } = await addComment({
-          target: this.artId, // 目标id
+          target: this.targetId, // 目标id
           content: this.message, // 评论内容
-          art_id: null // 文章id
+          art_id: this.artId // 文章id
         })
         // 发布内容传给父组件
         this.$emit('update-comment', data.new_obj)
+        // 清空弹框内容
+        this.message = ''
         this.$toast.success('发布成功')
       } catch (err) {
         this.$toast.fail('评论失败')

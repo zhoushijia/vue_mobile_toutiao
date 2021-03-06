@@ -8,6 +8,7 @@
       @load="onLoad"
     >
       <comment-item
+        @reply-comment="$emit('reply-comment', $event)"
         v-for="(comment, index) in list"
         :key="index"
         :comment="comment"
@@ -24,7 +25,7 @@ export default {
   name: 'ArticleComment',
   components: { CommentItem },
   props: {
-    artId: {
+    aId: {
       type: [Number, String, Object],
       required: true
     },
@@ -32,6 +33,10 @@ export default {
     list: {
       type: Array,
       default: () => [] // 默认值必须写函数形式
+    },
+    type: {
+      type: String,
+      default: 'a'
     }
   },
   data() {
@@ -44,6 +49,8 @@ export default {
     }
   },
   created() {
+    // ! 解决 视图 空白导致手动和自动onLoad 同时触发
+    this.loading = true
     this.onLoad()
   },
   methods: {
@@ -53,8 +60,9 @@ export default {
         const {
           data: { data }
         } = await getComments({
-          type: 'a', // a-对文章(article)的评论，c-对评论(comment)的回复
-          source: this.artId, // 文章id或评论id
+          type: this.type, // a-对文章(article)的评论，c-对评论(comment)的回复
+          // ! 这里手动toString 保证大数字id传输时不带引号
+          source: this.aId.toString(), // 文章id或评论id
           offset: this.offset, // 获取评论数据的偏移量，值为评论id
           limit: this.limit // 评论数据个数
         })

@@ -9,10 +9,10 @@
     />
     <div slot="title" class="title-wrap">
       <div class="user-name">{{ comment.aut_name }}</div>
+      <!-- :color="comment.is_liking ? 'red' : ''" -->
       <van-button
         class="like-btn"
         :icon="comment.is_liking ? 'good-job' : 'good-job-o'"
-        :color="comment.is_liking ? 'red' : ''"
         :loading="likeLoading"
         @click="onLikeComment"
         >{{ comment.like_count || '赞' }}</van-button
@@ -25,7 +25,11 @@
         <span class="comment-pubdate">{{
           comment.pubdate | relativeTime
         }}</span>
-        <van-button class="reply-btn" round
+        <!-- 回复评论 -->
+        <van-button
+          class="reply-btn"
+          round
+          @click="$emit('reply-comment', comment)"
           >回复 {{ comment.reply_count }}</van-button
         >
       </div>

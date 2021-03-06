@@ -77,8 +77,9 @@
 
         <!-- 评论列表 -->
         <article-comment
+          @reply-comment="replyCommentShow"
           :list="commentList"
-          :artId="articleInfo.art_id"
+          :aId="articleInfo.art_id"
           @update-comment-total="commentTotalCount = $event"
         />
         <!-- 评论列表 -->
@@ -130,11 +131,29 @@
       <!-- 发布评论 -->
       <van-popup v-model="isCommentPostShow" position="bottom">
         <comment-post
-          :artId="articleInfo.art_id"
+          :targetId="articleInfo.art_id"
           @update-comment="commentPostPupupClose"
         />
       </van-popup>
       <!-- 发布评论 -->
+
+      <!-- 回复评论 -->
+      <van-popup
+        v-model="isReplyCommentShow"
+        position="bottom"
+        :style="{ height: '100%' }"
+        class="reply-popup"
+      >
+        <!-- TODO: 每次弹出回复都是重新创建 v-if="isReplyCommentShow" 或者绑定key :key="isReplyCommentShow" -->
+        <!-- TODO: 弹层渲染出来以后就只是简单的切换显示和隐藏，里面的内容也不再重新渲染了，
+        所以会导致我们的评论的回复列表不会动态更新了。解决办法就是在每次弹层显示的时候重新渲染组件。 -->
+        <comment-reply
+          v-if="isReplyCommentShow"
+          :comment="comment"
+          @close-reply-popup="isReplyCommentShow = false"
+        />
+      </van-popup>
+      <!-- 回复评论 -->
     </div>
   </div>
 </template>
@@ -148,6 +167,7 @@ import CollectArticle from '@/components/collect-article'
 import LikeArticle from '@/components/like-article'
 import ArticleComment from './components/article-comment.vue'
 import CommentPost from './components/comment-post.vue'
+import CommentReply from './components/comment-reply.vue'
 
 export default {
   name: 'ArticleIndex',
@@ -156,7 +176,8 @@ export default {
     CollectArticle,
     LikeArticle,
     ArticleComment,
-    CommentPost
+    CommentPost,
+    CommentReply
   },
   props: {
     // ! 解耦 保证不止路由跳转 增加了组件的复用性
@@ -174,7 +195,9 @@ export default {
       // followedLoading: false // 点击关注按钮后的加载状态
       commentTotalCount: 0, // 评论总数
       isCommentPostShow: false,
-      commentList: []
+      isReplyCommentShow: false,
+      commentList: [],
+      comment: {}
     }
   },
   computed: {},
@@ -240,6 +263,14 @@ export default {
       this.isCommentPostShow = false
       // 新发表的评论添加到评论列表头部
       this.commentList.unshift(data)
+      // 评论+1
+      this.commentTotalCount++
+    },
+    // 回复评论
+    replyCommentShow(comment) {
+      // 回复弹层
+      this.isReplyCommentShow = true
+      this.comment = comment
     }
     // 关注与取关
     /*  async onFollowClick() {
@@ -269,6 +300,10 @@ export default {
 @import './github-markdown.css';
 
 .article-container {
+  .page-nav-bar {
+    // 防止挡住弹出层
+    z-index: 0;
+  }
   .main-wrap {
     position: fixed;
     left: 0;
@@ -380,5 +415,8 @@ export default {
       }
     }
   }
+  /*  .reply-popup {
+    z-index: 2;
+  } */
 }
 </style>
