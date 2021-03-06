@@ -77,6 +77,7 @@
 
         <!-- 评论列表 -->
         <article-comment
+          :list="commentList"
           :artId="articleInfo.art_id"
           @update-comment-total="commentTotalCount = $event"
         />
@@ -84,7 +85,12 @@
 
         <!-- 底部区域 -->
         <div class="article-bottom">
-          <van-button class="comment-btn" type="default" round size="small"
+          <van-button
+            class="comment-btn"
+            type="default"
+            round
+            size="small"
+            @click="isCommentPostShow = true"
             >写评论</van-button
           >
           <van-icon name="comment-o" :badge="commentTotalCount" color="#777" />
@@ -120,6 +126,15 @@
         >
       </div>
       <!-- /加载失败：其它未知错误（例如网络原因或服务端异常） -->
+
+      <!-- 发布评论 -->
+      <van-popup v-model="isCommentPostShow" position="bottom">
+        <comment-post
+          :artId="articleInfo.art_id"
+          @update-comment="commentPostPupupClose"
+        />
+      </van-popup>
+      <!-- 发布评论 -->
     </div>
   </div>
 </template>
@@ -132,10 +147,17 @@ import FollowUser from '@/components/follow-user'
 import CollectArticle from '@/components/collect-article'
 import LikeArticle from '@/components/like-article'
 import ArticleComment from './components/article-comment.vue'
+import CommentPost from './components/comment-post.vue'
 
 export default {
   name: 'ArticleIndex',
-  components: { FollowUser, CollectArticle, LikeArticle, ArticleComment },
+  components: {
+    FollowUser,
+    CollectArticle,
+    LikeArticle,
+    ArticleComment,
+    CommentPost
+  },
   props: {
     // ! 解耦 保证不止路由跳转 增加了组件的复用性
     articleId: {
@@ -150,7 +172,9 @@ export default {
       loading: true, // 加载状态显示条件
       errStatus: 0, // 资源是否找到
       // followedLoading: false // 点击关注按钮后的加载状态
-      commentTotalCount: 0
+      commentTotalCount: 0, // 评论总数
+      isCommentPostShow: false,
+      commentList: []
     }
   },
   computed: {},
@@ -208,6 +232,14 @@ export default {
           })
         }
       })
+    },
+    // 评论发布框
+    // 评论关闭
+    commentPostPupupClose(data) {
+      // 关闭弹框
+      this.isCommentPostShow = false
+      // 新发表的评论添加到评论列表头部
+      this.commentList.unshift(data)
     }
     // 关注与取关
     /*  async onFollowClick() {

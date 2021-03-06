@@ -27,11 +27,16 @@ export default {
     artId: {
       type: [Number, String, Object],
       required: true
+    },
+    // ! 假设是父组件传来的
+    list: {
+      type: Array,
+      default: () => [] // 默认值必须写函数形式
     }
   },
   data() {
     return {
-      list: [], // 评论列表
+      // list: [], // 评论列表
       loading: false, // 上拉加载更多的 loading
       finished: false, // 是否加载结束
       offset: null,
@@ -62,7 +67,7 @@ export default {
 
         // 数据全部加载完成
         if (data.results.length) {
-          // last_id
+          this.offset = data.last_id
         } else {
           this.finished = true
         }

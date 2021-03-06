@@ -9,9 +9,14 @@
     />
     <div slot="title" class="title-wrap">
       <div class="user-name">{{ comment.aut_name }}</div>
-      <van-button class="like-btn" icon="good-job-o">{{
-        comment.like_count || '赞'
-      }}</van-button>
+      <van-button
+        class="like-btn"
+        :icon="comment.is_liking ? 'good-job' : 'good-job-o'"
+        :color="comment.is_liking ? 'red' : ''"
+        :loading="likeLoading"
+        @click="onLikeComment"
+        >{{ comment.like_count || '赞' }}</van-button
+      >
     </div>
 
     <div slot="label">
@@ -29,6 +34,7 @@
 </template>
 
 <script>
+import { addLike, deleteLike } from '@/api/comment'
 export default {
   name: 'CommentItem',
   components: {},
@@ -39,13 +45,36 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      likeLoading: false
+    }
   },
   computed: {},
   watch: {},
   created() {},
   mounted() {},
-  methods: {}
+  methods: {
+    // 点赞
+    async onLikeComment() {
+      this.likeLoading = true
+      try {
+        if (this.comment.is_liking) {
+          // 取消点赞
+          await deleteLike(this.comment.com_id)
+          this.comment.like_count--
+        } else {
+          // 点赞
+          await addLike(this.comment.com_id)
+          this.comment.like_count++
+        }
+        // 视图
+        this.comment.is_liking = !this.comment.is_liking
+      } catch (err) {
+        this.$toast.fail('评论点赞失败')
+      }
+      this.likeLoading = false
+    }
+  }
 }
 </script>
 
