@@ -11,6 +11,11 @@ const routes = [
     component: () => import('@/views/login')
   },
   {
+    path: '/user/profile',
+    name: 'user-profile',
+    component: () => import('@/views/user-profile')
+  },
+  {
     path: '/search',
     name: 'search',
     // 会直接去寻找login目录下的 index 所以可以省略

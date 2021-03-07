@@ -8,7 +8,17 @@
           <span class="name">{{ userinfo.name }}</span>
         </div>
         <div class="right">
-          <van-button size="mini" round>编辑资料</van-button>
+          <van-button
+            size="mini"
+            round
+            @click="
+              $router.push({
+                name: 'user-profile',
+                query: { redirect: '/user-profile' }
+              })
+            "
+            >编辑资料</van-button
+          >
         </div>
       </div>
       <div class="data-stats">

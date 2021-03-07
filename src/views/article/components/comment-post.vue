@@ -22,6 +22,7 @@ export default {
   name: 'CommentPost',
   components: {},
   // inject: ['articleId'],
+  // 无论是文章评论还是回复评论都会得到 articleId
   inject: {
     articleId: {
       type: [Number, String, Object],
