@@ -16,12 +16,13 @@
       title="姓名"
       :value="userInfo.name"
       is-link
-      @click="editUserName"
+      @click="isUserProfileNameEditShow = true"
     />
     <van-cell
       title="性别"
       :value="userInfo.gender === 0 ? '男' : '女'"
       is-link
+      @click="isUserProfileGenderEditShow = true"
     />
     <van-cell title="生日" :value="userInfo.birthday" is-link />
     <!-- 个人信息 -->
@@ -37,24 +38,35 @@
         v-model="userInfo.name"
       />
     </van-popup>
-
     <!-- 修改姓名 -->
+
+    <!-- 修改性别 -->
+    <van-popup v-model="isUserProfileGenderEditShow" position="bottom">
+      <update-gender
+        @close="isUserProfileGenderEditShow = false"
+        v-model="userInfo.gender"
+      />
+    </van-popup>
+    <!-- 修改性别 -->
   </div>
 </template>
 
 <script>
 import { getUserProfile } from '@/api/user'
 import UpdateName from './components/update-name'
+import UpdateGender from './components/update-gender'
 export default {
   name: 'UserProfile',
   props: {},
   components: {
-    UpdateName
+    UpdateName,
+    UpdateGender
   },
   data() {
     return {
       userInfo: {},
-      isUserProfileNameEditShow: false
+      isUserProfileNameEditShow: false,
+      isUserProfileGenderEditShow: false
     }
   },
   created() {
@@ -72,10 +84,6 @@ export default {
       } catch (err) {
         this.$toast.fail('获取个人配置信息失败')
       }
-    },
-    // 修改用户姓名
-    editUserName() {
-      this.isUserProfileNameEditShow = true
     }
   },
   computed: {},

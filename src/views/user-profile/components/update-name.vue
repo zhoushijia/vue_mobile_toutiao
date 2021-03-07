@@ -10,7 +10,7 @@
     <!-- 修改框 -->
     <div style="padding:10px">
       <van-field
-        v-model="localName"
+        v-model.trim="localName"
         rows="2"
         autosize
         type="textarea"
@@ -42,9 +42,10 @@ export default {
   methods: {
     // 修改姓名
     async onUpdateName() {
+      if (this.localName.length <= 0) return this.$toast('输入不能为空')
       // 慢速网络下防止再次点击修改，更新加载提示
       this.$toast.loading({
-        message: '更新中...',
+        message: '保存中...',
         forbidClick: true,
         duration: 0
       })
@@ -58,7 +59,7 @@ export default {
         // 关闭弹层
         this.$emit('close-update-name')
         // 更新成功提示
-        this.$toast.success('更新姓名成功')
+        this.$toast.success('更新成功')
       } catch (err) {
         this.$toast.fail('更新失败')
       }
