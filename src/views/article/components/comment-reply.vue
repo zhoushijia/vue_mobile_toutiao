@@ -62,6 +62,7 @@ export default {
   mounted() {},
   methods: {
     commentPostPupupClose(data) {
+      this.comment.reply_count++
       // 关闭弹出层
       this.isReplyShow = false
       // 回复评论添加到清单

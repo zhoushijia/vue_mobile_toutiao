@@ -7,16 +7,20 @@
           <van-image class="avatar" :src="userinfo.photo" round fit="cover" />
           <span class="name">{{ userinfo.name }}</span>
         </div>
-        <div class="right">
-          <van-button
-            size="mini"
-            round
-            @click="
+        <!-- @click="
               $router.push({
                 name: 'user-profile',
                 query: { redirect: '/user-profile' }
               })
-            "
+            " -->
+        <div class="right">
+          <van-button
+            size="mini"
+            round
+            :to="{
+              name: 'user-profile',
+              query: { redirect: '/user-profile' }
+            }"
             >编辑资料</van-button
           >
         </div>
