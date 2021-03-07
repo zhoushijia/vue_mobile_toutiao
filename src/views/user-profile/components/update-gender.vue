@@ -1,5 +1,6 @@
 <template>
   <div class="update-gender">
+    <!-- 选择器  可以做级联 -->
     <van-picker
       title="性别"
       show-toolbar
@@ -55,7 +56,10 @@ export default {
         this.$toast.fail('更新失败')
       }
     },
-    onChange() {}
+    onChange(picker, values) {
+      console.log(picker)
+      console.log(values)
+    }
   },
   computed: {},
   watch: {}

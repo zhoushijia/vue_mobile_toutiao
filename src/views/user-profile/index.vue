@@ -8,8 +8,13 @@
       @click-left="$router.back()"
     />
     <!-- /导航栏 -->
+
+    <!-- 头像上传栏 -->
+    <input type="file" hidden ref="imgFile" @change="onUpdateAvatar" />
+    <!-- 头像上传栏 -->
+
     <!-- 个人信息 -->
-    <van-cell title="头像" is-link>
+    <van-cell title="头像" is-link @click="$refs.imgFile.click()">
       <van-image class="avatar" fit="cover" round :src="userInfo.photo" />
     </van-cell>
     <van-cell
@@ -62,6 +67,19 @@
       />
     </van-popup>
     <!-- 修改生日 -->
+
+    <!-- 修改头像图片 -->
+    <van-popup
+      v-model="isUserProfileAvatarEditShow"
+      position="bottom"
+      style="height: 100%"
+    >
+      <update-avatar
+        v-model="avatar"
+        @close="isUserProfileAvatarEditShow = false"
+      />
+    </van-popup>
+    <!-- 修改头像图片 -->
   </div>
 </template>
 
@@ -70,20 +88,24 @@ import { getUserProfile } from '@/api/user'
 import UpdateName from './components/update-name'
 import UpdateGender from './components/update-gender'
 import UpdateBirth from './components/update-birth'
+import UpdateAvatar from './components/update-avatar'
 export default {
   name: 'UserProfile',
   props: {},
   components: {
     UpdateName,
     UpdateGender,
-    UpdateBirth
+    UpdateBirth,
+    UpdateAvatar
   },
   data() {
     return {
       userInfo: {},
       isUserProfileNameEditShow: false,
       isUserProfileGenderEditShow: false,
-      isUserProfileBirthEditShow: false
+      isUserProfileBirthEditShow: false,
+      isUserProfileAvatarEditShow: false,
+      avatar: ''
     }
   },
   created() {
@@ -101,6 +123,17 @@ export default {
       } catch (err) {
         this.$toast.fail('获取个人配置信息失败')
       }
+    },
+    // ! 监听file上传的change事件
+    onUpdateAvatar() {
+      // 拿到文件对象
+      const file = this.$refs.imgFile.files[0]
+      // 创建blob格式的图片信息
+      this.avatar = window.URL.createObjectURL(file)
+      // 显示头像更改弹层
+      this.isUserProfileAvatarEditShow = true
+      // 清空input框
+      this.$refs.imgFile.value = ''
     }
   },
   computed: {},

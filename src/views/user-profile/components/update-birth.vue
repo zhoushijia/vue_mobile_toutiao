@@ -1,4 +1,5 @@
 <template>
+  <!-- 时间选择器 -->
   <van-datetime-picker
     v-model="currentDate"
     type="date"
