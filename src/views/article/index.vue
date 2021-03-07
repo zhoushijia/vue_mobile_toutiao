@@ -179,6 +179,11 @@ export default {
     CommentPost,
     CommentReply
   },
+  provide() {
+    return {
+      articleId: this.articleId
+    }
+  },
   props: {
     // ! 解耦 保证不止路由跳转 增加了组件的复用性
     articleId: {

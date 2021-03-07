@@ -5,6 +5,8 @@
       v-model="loading"
       :finished="finished"
       finished-text="没有更多了"
+      :error.sync="error"
+      error-text="请求失败，点击重新加载"
       @load="onLoad"
     >
       <comment-item
@@ -44,6 +46,7 @@ export default {
       // list: [], // 评论列表
       loading: false, // 上拉加载更多的 loading
       finished: false, // 是否加载结束
+      error: false,
       offset: null,
       limit: 15
     }
@@ -79,7 +82,10 @@ export default {
         } else {
           this.finished = true
         }
-      } catch (err) {}
+      } catch (err) {
+        this.loading = false
+        this.error = true
+      }
     }
   }
 }

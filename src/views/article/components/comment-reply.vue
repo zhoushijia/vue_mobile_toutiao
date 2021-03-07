@@ -33,7 +33,6 @@
     <van-popup v-model="isReplyShow" position="bottom">
       <comment-post
         :targetId="comment.com_id"
-        :artId="comment.art_id"
         @update-comment="commentPostPupupClose"
       />
     </van-popup>

@@ -21,14 +21,17 @@ import { addComment } from '@/api/comment'
 export default {
   name: 'CommentPost',
   components: {},
+  // inject: ['articleId'],
+  inject: {
+    articleId: {
+      type: [Number, String, Object],
+      default: null
+    }
+  },
   props: {
     targetId: {
       type: [Number, String, Object],
       required: true
-    },
-    artId: {
-      type: [Number, String, Object],
-      default: () => null
     }
   },
   data() {
@@ -53,9 +56,12 @@ export default {
         const {
           data: { data }
         } = await addComment({
-          target: this.targetId, // 目标id
+          target: this.targetId.toString(), // 目标id
           content: this.message, // 评论内容
-          art_id: this.artId // 文章id
+          art_id:
+            this.articleId.toString() === this.targetId.toString()
+              ? null
+              : this.articleId.toString() // 文章id
         })
         // 发布内容传给父组件
         this.$emit('update-comment', data.new_obj)
