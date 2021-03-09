@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <keep-alive :include="['LayoutIndex']">
+    <keep-alive :include="[$store.state.aliveCom[0]]">
       <!-- 路由出口 -->
       <router-view />
     </keep-alive>

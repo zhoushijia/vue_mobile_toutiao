@@ -32,6 +32,9 @@
 <script>
 export default {
   name: 'LayoutIndex',
+  mounted() {
+    this.$store.commit('addLayoutIndex', 'LayoutIndex')
+  },
   data() {
     return {
       active: 0

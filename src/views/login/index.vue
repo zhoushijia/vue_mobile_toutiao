@@ -112,6 +112,8 @@ export default {
         const { data: res } = await login(this.user)
         // token 的处理
         this.$store.commit('setUser', res.data)
+        // 移除组件缓存
+        this.$store.commit('removeLayoutIndex', 'LayoutIndex')
         // 下一次的 toast 会覆盖上一次的 toast
         this.$toast.success('登录成功')
         // 跳转页面 路由跳转中有值则跳转到对应路径 否则跳转到主页
