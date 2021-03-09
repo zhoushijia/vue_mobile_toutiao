@@ -7,6 +7,7 @@ import router from '@/router'
 let baseURL = '/app'
 if (process.env.NODE_ENV === 'production') {
   baseURL = 'http://toutiao-app.itheima.net/'
+  // baseURL = 'http://ttapi.research.itcast.cn/'
 }
 // 以前是直接将基准路径挂载到 axios
 // 现在采用 create 创建 axios 实例,这样可以保证多个axios实例,可以挂载多个基准路径
@@ -79,7 +80,7 @@ request.interceptors.response.use(
             }
           } = await requestToken({
             method: 'PUT',
-            url: '/app/v1_0/authorizations',
+            url: '/v1_0/authorizations',
             headers: { Authorization: `Bearer ${user.refresh_token}` }
           })
           // #3 将新的token赋值给vuex中的user

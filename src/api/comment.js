@@ -5,7 +5,7 @@ import request from '../utils/request'
 export const getComments = params =>
   request({
     method: 'GET',
-    url: '/app/v1_0/comments',
+    url: '/v1_0/comments',
     params
   })
 
@@ -14,7 +14,7 @@ export const addLike = comId =>
   request({
     method: 'POST',
     // 这里 articleId 对象在字符串拼接的时候自动调用toString方法转换成字符串
-    url: '/app/v1_0/comment/likings',
+    url: '/v1_0/comment/likings',
     data: { target: comId }
   })
 
@@ -23,7 +23,7 @@ export const deleteLike = comId =>
   request({
     method: 'DELETE',
     // 这里 articleId 对象在字符串拼接的时候自动调用toString方法转换成字符串
-    url: `/app/v1_0/comment/likings/${comId}`
+    url: `/v1_0/comment/likings/${comId}`
   })
 
 // 发布评论
@@ -31,6 +31,6 @@ export const addComment = data =>
   request({
     method: 'POST',
     // 这里 articleId 对象在字符串拼接的时候自动调用toString方法转换成字符串
-    url: '/app/v1_0/comments',
+    url: '/v1_0/comments',
     data
   })

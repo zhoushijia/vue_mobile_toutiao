@@ -5,7 +5,7 @@ import request from '@/utils/request'
 export const getArticle = params =>
   request({
     method: 'GET',
-    url: '/app/v1_1/articles',
+    url: '/v1_1/articles',
     params
   })
 
@@ -14,7 +14,7 @@ export const getArticleDetails = articleId =>
   request({
     method: 'GET',
     // 这里 articleId 对象在字符串拼接的时候自动调用toString方法转换成字符串
-    url: `/app/v1_0/articles/${articleId}`
+    url: `/v1_0/articles/${articleId}`
   })
 
 // 关注
@@ -22,7 +22,7 @@ export const isFollowed = autId =>
   request({
     method: 'POST',
     // 这里 articleId 对象在字符串拼接的时候自动调用toString方法转换成字符串
-    url: '/app/v1_0/user/followings',
+    url: '/v1_0/user/followings',
     data: {
       target: autId
     }
@@ -33,7 +33,7 @@ export const isUnfollowed = autId =>
   request({
     method: 'DELETE',
     // 这里 articleId 对象在字符串拼接的时候自动调用toString方法转换成字符串
-    url: `/app/v1_0/user/followings/${autId}`
+    url: `/v1_0/user/followings/${autId}`
   })
 
 // 收藏文章
@@ -41,7 +41,7 @@ export const addCollect = artId =>
   request({
     method: 'POST',
     // 这里 articleId 对象在字符串拼接的时候自动调用toString方法转换成字符串
-    url: '/app/v1_0/article/collections',
+    url: '/v1_0/article/collections',
     data: { target: artId }
   })
 
@@ -50,7 +50,7 @@ export const deleteCollect = artId =>
   request({
     method: 'DELETE',
     // 这里 articleId 对象在字符串拼接的时候自动调用toString方法转换成字符串
-    url: `/app/v1_0/article/collections/${artId}`
+    url: `/v1_0/article/collections/${artId}`
   })
 
 // 点赞
@@ -58,7 +58,7 @@ export const addLike = artId =>
   request({
     method: 'POST',
     // 这里 articleId 对象在字符串拼接的时候自动调用toString方法转换成字符串
-    url: '/app/v1_0/article/likings',
+    url: '/v1_0/article/likings',
     data: { target: artId }
   })
 
@@ -67,5 +67,5 @@ export const deleteLike = artId =>
   request({
     method: 'DELETE',
     // 这里 articleId 对象在字符串拼接的时候自动调用toString方法转换成字符串
-    url: `/app/v1_0/article/likings/${artId}`
+    url: `/v1_0/article/likings/${artId}`
   })
