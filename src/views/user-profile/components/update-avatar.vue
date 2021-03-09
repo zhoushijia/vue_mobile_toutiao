@@ -1,7 +1,7 @@
 <template>
   <!-- Wrap the image or canvas element with a block element (container) -->
   <div class="update-avatar">
-    <img :src="value" ref="image" alt="" />
+    <img :src="img" ref="image" alt="" />
     <div class="toolbar">
       <span @click="$emit('close')">取消</span>
       <span @click="onUpdateAvatar">完成</span>
@@ -19,7 +19,7 @@ export default {
   name: '',
   components: {},
   props: {
-    value: {
+    img: {
       type: [String, Object],
       default: null
     }
@@ -53,10 +53,11 @@ export default {
         duration: 0
       })
       // 客户端直接裁剪并更新图片
+      // 如果需求是base64 this.cropper.getCroppedCanvas().toDataURL('image/jpeg')
+      // 前端裁剪好，将裁剪好的blob图片直接传给后端
       this.cropper.getCroppedCanvas().toBlob(async blob => {
+        // 后端要求的数据格式 Content-Type multipart/form-data
         const formData = new FormData()
-
-        // Pass the image file name as the third parameter if necessary.
         formData.append('photo', blob /*, 'example.png' */)
         try {
           const {
@@ -65,7 +66,7 @@ export default {
           // 关闭弹框
           this.$emit('close')
           // 更新头像信息
-          this.$emit('input', data.photo)
+          this.$emit('update-avatar', data.photo)
           this.$toast.success('更新成功')
         } catch (err) {
           this.$toast.fail('更新头像失败')

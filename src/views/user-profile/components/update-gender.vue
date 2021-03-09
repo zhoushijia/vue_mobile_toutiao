@@ -56,6 +56,7 @@ export default {
         this.$toast.fail('更新失败')
       }
     },
+    // 未使用 这里可以拿到组件最终选择的值
     onChange(picker, values) {
       console.log(picker)
       console.log(values)

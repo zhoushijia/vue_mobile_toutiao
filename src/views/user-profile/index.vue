@@ -74,9 +74,12 @@
       position="bottom"
       style="height: 100%"
     >
+      <!-- 重新渲染，清楚弹框的display -->
       <update-avatar
-        v-model="avatar"
+        v-if="isUserProfileAvatarEditShow"
+        :img="avatar"
         @close="isUserProfileAvatarEditShow = false"
+        @update-avatar="userInfo.photo = $event"
       />
     </van-popup>
     <!-- 修改头像图片 -->
@@ -129,6 +132,7 @@ export default {
       // 拿到文件对象
       const file = this.$refs.imgFile.files[0]
       // 创建blob格式的图片信息
+      // blob格式数据可以直接作为img的src
       this.avatar = window.URL.createObjectURL(file)
       // 显示头像更改弹层
       this.isUserProfileAvatarEditShow = true
