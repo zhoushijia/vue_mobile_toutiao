@@ -34,6 +34,7 @@
 <script>
 import { getArticle } from '@/api/article.js'
 import ArticlesItem from '@/components/articles-item'
+import { debounce } from 'lodash'
 export default {
   name: 'ArticlesList',
   components: {
@@ -130,9 +131,9 @@ export default {
     const aDom = this.$refs['article-scroll']
     // aDom.onscroll = function() {
     // ! funtion 的this不是指向的vm
-    aDom.onscroll = () => {
+    aDom.onscroll = debounce(() => {
       this.artScroll = aDom.scrollTop
-    }
+    }, 300)
   },
   // 激活时拿到上次缓存的artScroll
   activated() {
