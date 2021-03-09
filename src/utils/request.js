@@ -4,10 +4,15 @@ import jsonBig from 'json-bigint'
 import { Toast } from 'vant'
 import router from '@/router'
 
+let baseURL = '/app'
+if (process.env.NODE_ENV === 'production') {
+  baseURL = 'http://toutiao-app.itheima.net/'
+}
 // 以前是直接将基准路径挂载到 axios
 // 现在采用 create 创建 axios 实例,这样可以保证多个axios实例,可以挂载多个基准路径
 const request = axios.create({
   // baseURL: 'http://ttapi.research.itcast.cn/'  //接口有问题 改 vue.config.js
+  baseURL,
   // `transformResponse` 在传递给 then/catch 前，允许修改响应数据
   transformResponse: [
     function(data) {
