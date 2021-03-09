@@ -1,5 +1,5 @@
 <template>
-  <div class="articles-list">
+  <div class="articles-list" ref="article-scroll">
     <!--
         loading 控制上拉加载更多的 loading 状态
         finished 控制数据是否加载结束
@@ -35,10 +35,11 @@
 import { getArticle } from '@/api/article.js'
 import ArticlesItem from '@/components/articles-item'
 export default {
-  name: 'Articles-List',
+  name: 'ArticlesList',
   components: {
     ArticlesItem
   },
+
   data() {
     return {
       list: [], // 存储list列表数据
@@ -47,7 +48,8 @@ export default {
       timestamp: null, // 请求下一页数据的时间戳
       error: false, // 上拉刷新失败的标识
       isRefreshLoading: false, // 下拉刷新的 loading 状态
-      isRefreshSuccessText: '刷新成功' // 下拉刷新完成后的状态提示文本
+      isRefreshSuccessText: '刷新成功', // 下拉刷新完成后的状态提示文本
+      artScroll: 0 // 存储滚动位置
     }
   },
   props: {
@@ -122,6 +124,19 @@ export default {
         this.isRefreshSuccessText = '刷新失败'
       }
     }
+  },
+  mounted() {
+    // 监听ArticlesList的滚动事件  得到距离顶部的滚动距离
+    const aDom = this.$refs['article-scroll']
+    // aDom.onscroll = function() {
+    // ! funtion 的this不是指向的vm
+    aDom.onscroll = () => {
+      this.artScroll = aDom.scrollTop
+    }
+  },
+  // 激活时拿到上次缓存的artScroll
+  activated() {
+    this.$refs['article-scroll'].scrollTop = this.artScroll
   }
 }
 </script>

@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <!-- 路由出口 -->
-    <router-view />
+    <keep-alive :include="['LayoutIndex']">
+      <!-- 路由出口 -->
+      <router-view />
+    </keep-alive>
   </div>
 </template>
 

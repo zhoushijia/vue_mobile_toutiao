@@ -107,9 +107,9 @@ router.beforeEach(async (to, from, next) => {
       message: '是否去登录？'
     }).catch(e => e)
     if (r === 'confirm') {
-      return login()
+      login()
     } else {
-      return next(false)
+      next(false)
     }
   } else {
     next()

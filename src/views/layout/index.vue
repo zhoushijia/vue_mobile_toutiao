@@ -1,7 +1,9 @@
 <template>
   <div>
-    <!-- 路由出口 -->
-    <router-view></router-view>
+    <keep-alive>
+      <!-- 路由出口 -->
+      <router-view></router-view>
+    </keep-alive>
     <!-- 底部选择栏 -->
     <van-tabbar route>
       <van-tabbar-item to="/">

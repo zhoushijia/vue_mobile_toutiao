@@ -76,6 +76,7 @@ import { mapState } from 'vuex'
 import { setToken, getToken } from '@/utils/storage'
 export default {
   name: 'HomeIndex',
+
   data() {
     return {
       activeName: 0,
