@@ -2,6 +2,7 @@ import axios from 'axios'
 import store from '@/store'
 import jsonBig from 'json-bigint'
 import { Toast } from 'vant'
+import router from '@/router'
 
 // 以前是直接将基准路径挂载到 axios
 // 现在采用 create 创建 axios 实例,这样可以保证多个axios实例,可以挂载多个基准路径
@@ -22,7 +23,7 @@ const request = axios.create({
 })
 
 // ! 新的基准请求对象 专门用于更新token 防止出现死循环
-// const requestToken = axios.create()
+const requestToken = axios.create()
 
 // 设置请求拦截器
 request.interceptors.request.use(
@@ -39,18 +40,58 @@ request.interceptors.request.use(
   }
 )
 
+const login = () =>
+  // ! 登陆后返回前一个页面
+  router.replace({
+    name: 'login',
+    // router.currentRoute 就相当于你组件当中使用的 this.$router
+    query: { redirect: router.currentRoute.fullPath }
+  })
+
 // 响应拦截器
 request.interceptors.response.use(
-  function(config) {
-    return config
+  function(response) {
+    return response
   },
-  function(err) {
+  async function(err) {
     // ! 请求错误优化
     const st = err.response.status
+    const user = store.state.user
     if (st === 400) {
       Toast.fail('请求参数错误')
     } else if (st === 401) {
-      Toast.fail('无效 TOKEN')
+      // ! token刷新
+      try {
+        // #1 如果token无效 判断是否有user或user.refresh_token
+        if (!user || !user.refresh_token) {
+          login()
+        } else {
+          // #2 如果有refresh_token 通过refresh_token发请求更新token
+          // ! 这里不建议用 request 去调用了，万一用 request 调用再出现了 401，就会形成死循环，解决办法就是封装一个新的请求函数
+          const {
+            data: {
+              data: { token }
+            }
+          } = await requestToken({
+            method: 'PUT',
+            url: '/app/v1_0/authorizations',
+            headers: { Authorization: `Bearer ${user.refresh_token}` }
+          })
+          // #3 将新的token赋值给vuex中的user
+          user.token = token
+          store.commit('setUser', user)
+          // console.log(store.state.user)
+          // #4 重新发请求
+          // err中的config携带了上次请求的所有请求信息
+          // 再次发起的请求头依然会经过请求拦截器，此时token已经更新为最新的token
+          // console.dir(err)
+          return await request(err.config)
+        }
+      } catch (error) {
+        err = error
+        login()
+      }
+      // Toast.fail('无效 TOKEN')
     } else if (st === 403) {
       Toast.fail('无权限')
     } else if (st === 404) {

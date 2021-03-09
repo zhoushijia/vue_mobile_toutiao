@@ -73,7 +73,7 @@ export default {
           offset: this.offset, // 获取评论数据的偏移量，值为评论id
           limit: this.limit // 评论数据个数
         })
-        console.log(data)
+        // console.log(data)
         // 添加数据
         this.list.push(...data.results)
         this.$emit('update-comment-total', data.total_count)
