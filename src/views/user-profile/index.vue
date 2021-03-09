@@ -136,7 +136,7 @@ export default {
       this.avatar = window.URL.createObjectURL(file)
       // 显示头像更改弹层
       this.isUserProfileAvatarEditShow = true
-      // 清空input框
+      // 清空input框 下次点击才能触发change事件
       this.$refs.imgFile.value = ''
     }
   },

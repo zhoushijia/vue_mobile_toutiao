@@ -13,7 +13,7 @@
 import 'cropperjs/dist/cropper.css'
 import Cropper from 'cropperjs'
 
-import { editUserProfile } from '@/api/user'
+import { updatePhoto } from '@/api/user'
 
 export default {
   name: '',
@@ -62,7 +62,7 @@ export default {
         try {
           const {
             data: { data }
-          } = await editUserProfile(formData)
+          } = await updatePhoto(formData)
           // 关闭弹框
           this.$emit('close')
           // 更新头像信息

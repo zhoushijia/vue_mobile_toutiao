@@ -45,3 +45,10 @@ export const editUserProfile = data =>
     url: '/app/v1_0/user/profile',
     data
   })
+
+export const updatePhoto = data =>
+  request({
+    method: 'PATCH',
+    url: '/app/v1_0/user/photo',
+    data
+  })
