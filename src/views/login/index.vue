@@ -8,7 +8,7 @@
         slot="left"
         name="cross"
         class="van-icon"
-        @click="$router.back()"
+        @click="$router.push($route.query.redirect || '/')"
       />
     </van-nav-bar>
     <!-- 登录表单 -->

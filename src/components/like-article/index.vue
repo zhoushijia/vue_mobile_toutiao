@@ -17,7 +17,7 @@ export default {
   props: {
     isLike: {
       type: [Number, String],
-      required: true
+      default: -1
     },
     artId: {
       type: [String, Number, Object],

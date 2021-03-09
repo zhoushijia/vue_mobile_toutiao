@@ -5,7 +5,7 @@
       class="page-nav-bar"
       left-arrow
       title="黑马头条"
-      @click-left="$router.push('/')"
+      @click-left="$router.push($route.query.redirect || '/')"
     ></van-nav-bar>
     <!-- /导航栏 -->
 

@@ -40,7 +40,7 @@ request.interceptors.request.use(
   }
 )
 
-const login = () =>
+export const login = () =>
   // ! 登陆后返回前一个页面
   router.replace({
     name: 'login',
