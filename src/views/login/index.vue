@@ -68,12 +68,12 @@
 import { login, sendSms } from '@/api/user'
 export default {
   name: 'loginIndex',
-  data() {
+  data () {
     return {
       // 表单数据收集
       user: {
-        mobile: '',
-        code: ''
+        mobile: '13911111119',
+        code: '246810'
       },
       // 表单校验规则
       userFormRules: {
@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     // #1 登录
-    async onLogin(v) {
+    async onLogin (v) {
       // vant 组件表格收集数据方式
       console.log(v)
 
@@ -127,7 +127,7 @@ export default {
       }
     },
     // #2 发送验证码
-    async sendSms() {
+    async sendSms () {
       // 验证手机号是否合法
       try {
         // 这里的'mobile'对应的是组件field中的name 会调用对应的rules规则

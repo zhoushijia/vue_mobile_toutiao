@@ -184,7 +184,7 @@ export default {
     CommentPost,
     CommentReply
   },
-  provide() {
+  provide () {
     return {
       articleId: this.articleId
     }
@@ -197,7 +197,7 @@ export default {
       required: true
     }
   },
-  data() {
+  data () {
     return {
       articleInfo: {},
       loading: true, // 加载状态显示条件
@@ -212,13 +212,13 @@ export default {
   },
   computed: {},
   watch: {},
-  created() {
+  created () {
     this.loadArticleDetails()
   },
-  mounted() {},
+  mounted () {},
   methods: {
     // #1 获取文章详情
-    async loadArticleDetails() {
+    async loadArticleDetails () {
       // 开始时 显示加载状态
       this.loading = true
       try {
@@ -250,7 +250,7 @@ export default {
       this.loading = false
     },
     // ! 图片预览
-    imgPreview() {
+    imgPreview () {
       // 拿到article-content标签 并且 拿到其中的imgDom标签
       const oImgs = this.$refs['article-content'].querySelectorAll('img')
       const images = []
@@ -258,9 +258,9 @@ export default {
       oImgs.forEach((img, index) => {
         images.push(img.src)
         // 给每个imgDom注册点击事件
-        img.onclick = function() {
+        img.onclick = function () {
           ImagePreview({
-            images,
+            images, // images图片路径组成的数组
             startPosition: index
           })
         }
@@ -268,7 +268,7 @@ export default {
     },
     // 评论发布框
     // 评论关闭
-    commentPostPupupClose(data) {
+    commentPostPupupClose (data) {
       // 关闭弹框
       this.isCommentPostShow = false
       // 新发表的评论添加到评论列表头部
@@ -277,7 +277,7 @@ export default {
       this.commentTotalCount++
     },
     // 回复评论
-    replyCommentShow(comment) {
+    replyCommentShow (comment) {
       // 回复弹层
       this.isReplyCommentShow = true
       this.comment = comment
