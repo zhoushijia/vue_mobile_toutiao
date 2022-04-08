@@ -2,68 +2,26 @@
   <div class="home-container">
     <!-- 导航栏 -->
     <van-nav-bar class="page-nav-bar" fixed>
-      <van-button
-        class="search-btn"
-        slot="title"
-        type="info"
-        size="small"
-        round
-        icon="search"
-        :to="{ name: 'search', query: { redirect: '/' } }"
-        >搜索</van-button
-      >
+      <van-button class="search-btn" slot="title" type="info" size="small" round icon="search" :to="{ name: 'search', query: { redirect: '/' } }">搜索</van-button>
     </van-nav-bar>
 
     <!-- 频道列表 -->
-    <van-tabs
-      class="channel-tabs"
-      v-model="activeName"
-      animated
-      swipeable
-      swipe-threshold="3"
-    >
-      <van-tab
-        v-for="channel in userChannel"
-        :key="channel.id"
-        :title="channel.name"
-      >
+    <van-tabs class="channel-tabs" v-model="activeName" animated swipeable swipe-threshold="3">
+      <van-tab v-for="channel in userChannel" :key="channel.id" :title="channel.name">
         <articles-list :channel="channel"></articles-list>
       </van-tab>
       <!-- 占位区间 -->
       <div slot="nav-right" class="placeholder"></div>
       <!-- 汉堡按钮 -->
-      <div
-        slot="nav-right"
-        class="hamburger-btn"
-        @click="isChannelEditShow = true"
-      >
+      <div slot="nav-right" class="hamburger-btn" @click="isChannelEditShow = true">
         <i class="toutiao toutiao-gengduo"></i>
       </div>
     </van-tabs>
     <!-- 频道弹出层 -->
-    <van-popup
-      v-model="isChannelEditShow"
-      closeable
-      position="bottom"
-      :style="{ height: '100%' }"
-      close-icon-position="top-left"
-      round
-      :overlay="false"
-    >
+    <van-popup v-model="isChannelEditShow" closeable position="bottom" :style="{ height: '100%' }" close-icon-position="top-left" round :overlay="false">
       <!-- #2 向频道编辑传频道数组;频道索引;接收频道编辑传来的索引 #3添加channel-->
-      <channel-edit
-        :userChannel="userChannel"
-        :activeName="activeName"
-        @addChannel="onAddChannels"
-        @updateChannel="updateMyChannel"
-      ></channel-edit>
-      <!-- <channel-edit
-        :userChannel="userChannel"
-        :activeName="activeName"
-        @sendIndex="activeName = $event"
-        @addChannel="userChannel.push($event)"
-        @removeChannel="remove"
-      ></channel-edit> -->
+      <channel-edit :userChannel="userChannel" :activeName="activeName" @addChannel="onAddChannels" @updateChannel="updateMyChannel"></channel-edit>
+      <!-- <channel-edit :userChannel="userChannel" :activeName="activeName" @sendIndex="activeName = $event" @addChannel="userChannel.push($event)" @removeChannel="remove"></channel-edit> -->
     </van-popup>
   </div>
 </template>

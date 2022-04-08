@@ -3,35 +3,14 @@
     <!-- 我的频道 -->
     <van-cell>
       <div slot="title" class="title-text">我的频道</div>
-      <van-button
-        class="edit-btn"
-        type="danger"
-        round
-        plain
-        size="mini"
-        @click="isEditShow = !isEditShow"
-        >{{ isEditShow ? '完成' : '编辑' }}</van-button
-      >
+      <van-button class="edit-btn" type="danger" round plain size="mini" @click="isEditShow = !isEditShow">{{ isEditShow ? '完成' : '编辑' }}</van-button>
     </van-cell>
     <van-grid :gutter="10" class="my-grid">
       <!-- #3 用户点击索引传递给主页 -->
-      <van-grid-item
-        class="grid-item"
-        v-for="(item, index) in userChannel"
-        :key="item.id"
-        @click="onEditChannel(item, index)"
-      >
+      <van-grid-item class="grid-item" v-for="(item, index) in userChannel" :key="item.id" @click="onEditChannel(item, index)">
         <!-- 点击编辑控制关闭图标的显示隐藏 -->
-        <van-icon
-          slot="icon"
-          name="clear"
-          v-show="isEditShow && !fixedChannels.includes(item.id)"
-        ></van-icon>
-        <span
-          slot="text"
-          :class="{ text: true, active: index === activeName }"
-          >{{ item.name }}</span
-        >
+        <van-icon slot="icon" name="clear" v-show="isEditShow && !fixedChannels.includes(item.id)"></van-icon>
+        <span slot="text" :class="{ text: true, active: index === activeName }">{{ item.name }}</span>
       </van-grid-item>
     </van-grid>
     <!-- 频道推荐 -->
@@ -39,14 +18,7 @@
       <div slot="title" class="title-text">频道推荐</div>
     </van-cell>
     <van-grid :gutter="10" class="recommend-grid">
-      <van-grid-item
-        class="grid-item"
-        v-for="item in recommendChannels"
-        :key="item.id"
-        :text="item.name"
-        icon="plus"
-        @click="onAddChannel(item)"
-      />
+      <van-grid-item class="grid-item" v-for="item in recommendChannels" :key="item.id" :text="item.name" icon="plus" @click="onAddChannel(item)" />
     </van-grid>
   </div>
 </template>

@@ -1,14 +1,6 @@
 <template>
   <!-- 时间选择器 -->
-  <van-datetime-picker
-    v-model="currentDate"
-    type="date"
-    title="选择年月日"
-    :min-date="minDate"
-    :max-date="maxDate"
-    @cancel="$emit('close')"
-    @confirm="onConfirm"
-  />
+  <van-datetime-picker v-model="currentDate" type="date" title="选择年月日" :min-date="minDate" :max-date="maxDate" @cancel="$emit('close')" @confirm="onConfirm" />
 </template>
 
 <script>

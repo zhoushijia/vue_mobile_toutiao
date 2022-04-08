@@ -1,9 +1,6 @@
 <template>
   <div class="reply-comment">
-    <van-nav-bar
-      :title="`${comment.reply_count}条回复`"
-      @click-left="$emit('close-reply-popup')"
-    >
+    <van-nav-bar :title="`${comment.reply_count}条回复`" @click-left="$emit('close-reply-popup')">
       <template #left>
         <van-icon name="cross" size="18" />
       </template>
@@ -20,21 +17,11 @@
     </div>
 
     <div class="reply-bottom">
-      <van-button
-        class="reply-btn"
-        size="mini"
-        round
-        type="default"
-        @click="isReplyShow = true"
-        >写评论</van-button
-      >
+      <van-button class="reply-btn" size="mini" round type="default" @click="isReplyShow = true">写评论</van-button>
     </div>
     <!-- 回复弹出层 -->
     <van-popup v-model="isReplyShow" position="bottom">
-      <comment-post
-        :targetId="comment.com_id"
-        @update-comment="commentPostPupupClose"
-      />
+      <comment-post :targetId="comment.com_id" @update-comment="commentPostPupupClose" />
     </van-popup>
   </div>
 </template>

@@ -1,12 +1,7 @@
 <template>
   <div class="article-container">
     <!-- 导航栏 -->
-    <van-nav-bar
-      class="page-nav-bar"
-      left-arrow
-      title="黑马头条"
-      @click-left="$router.push($route.query.redirect || '/')"
-    ></van-nav-bar>
+    <van-nav-bar class="page-nav-bar" left-arrow title="黑马头条" @click-left="$router.push($route.query.redirect || '/')"></van-nav-bar>
     <!-- /导航栏 -->
 
     <div class="main-wrap">
@@ -24,92 +19,35 @@
 
         <!-- 用户信息 -->
         <van-cell class="user-info" center :border="false">
-          <van-image
-            class="avatar"
-            slot="icon"
-            round
-            fit="cover"
-            :src="articleInfo.aut_photo"
-          />
+          <van-image class="avatar" slot="icon" round fit="cover" :src="articleInfo.aut_photo" />
           <div slot="title" class="user-name">{{ articleInfo.aut_name }}</div>
           <div slot="label" class="publish-date">
             {{ articleInfo.pubdate | relativeTime }}
           </div>
-          <!-- <van-button
-            class="follow-btn"
-            type="info"
-            color="#3296fa"
-            round
-            :loading="followedLoading"
-            size="small"
-            icon="plus"
-            v-if="!articleInfo.is_followed"
-            @click="onFollowClick"
-            >关注</van-button
-          >
-          <van-button
-            v-else
-            class="follow-btn"
-            round
-            :loading="followedLoading"
-            size="small"
-            @click="onFollowClick"
-            >取消关注</van-button
-          > -->
+          <!-- <van-button class="follow-btn" type="info" color="#3296fa" round :loading="followedLoading" size="small" icon="plus" v-if="!articleInfo.is_followed" @click="onFollowClick">关注</van-button>
+          <van-button v-else class="follow-btn" round :loading="followedLoading" size="small" @click="onFollowClick">取消关注</van-button> -->
           <!-- 数据绑定和事件监听实现数据双向绑定 -->
-          <!-- <follow-user
-            :isFollowed="articleInfo.is_followed"
-            :autId="articleInfo.aut_id"
-            @update-is_followed="articleInfo.is_followed = $event"
-          ></follow-user> -->
+          <!-- <follow-user :isFollowed="articleInfo.is_followed" :autId="articleInfo.aut_id" @update-is_followed="articleInfo.is_followed = $event"></follow-user> -->
           <!-- 组件v-model -->
-          <follow-user
-            v-model="articleInfo.is_followed"
-            :autId="articleInfo.aut_id"
-            @update-is_followed="articleInfo.is_followed = $event"
-          ></follow-user>
+          <follow-user v-model="articleInfo.is_followed" :autId="articleInfo.aut_id" @update-is_followed="articleInfo.is_followed = $event"></follow-user>
         </van-cell>
         <!-- /用户信息 -->
 
         <!-- 文章内容 -->
-        <div
-          class="article-content markdown-body"
-          ref="article-content"
-          v-html="articleInfo.content"
-        ></div>
+        <div class="article-content markdown-body" ref="article-content" v-html="articleInfo.content"></div>
         <van-divider>正文结束</van-divider>
         <!-- 文章内容 -->
 
         <!-- 评论列表 -->
-        <article-comment
-          @reply-comment="replyCommentShow"
-          :list="commentList"
-          :aId="articleInfo.art_id"
-          @update-comment-total="commentTotalCount = $event"
-        />
+        <article-comment @reply-comment="replyCommentShow" :list="commentList" :aId="articleInfo.art_id" @update-comment-total="commentTotalCount = $event" />
         <!-- 评论列表 -->
 
         <!-- 底部区域 -->
         <div class="article-bottom">
-          <van-button
-            class="comment-btn"
-            type="default"
-            round
-            size="small"
-            @click="isCommentPostShow = true"
-            >写评论</van-button
-          >
+          <van-button class="comment-btn" type="default" round size="small" @click="isCommentPostShow = true">写评论</van-button>
           <van-icon name="comment-o" :badge="commentTotalCount" color="#777" />
-          <collect-article
-            v-model="articleInfo.is_collected"
-            :artId="articleInfo.art_id"
-            @update-is_colleted="articleInfo.is_collected = $event"
-          />
-          <like-article
-            v-model="articleInfo.attitude"
-            :artId="articleInfo.art_id"
-            @update-is_like="articleInfo.attitude = $event"
-          />
+          <collect-article v-model="articleInfo.is_collected" :artId="articleInfo.art_id" @update-is_colleted="articleInfo.is_collected = $event" />
+          <like-article v-model="articleInfo.attitude" :artId="articleInfo.art_id" @update-is_like="articleInfo.attitude = $event" />
           <van-icon name="share" color="#777777"></van-icon>
         </div>
         <!-- /底部区域 -->
@@ -127,36 +65,22 @@
       <div class="error-wrap" v-else>
         <van-icon name="failure" />
         <p class="text">内容加载失败！</p>
-        <van-button class="retry-btn" @click="loadArticleDetails"
-          >点击重试</van-button
-        >
+        <van-button class="retry-btn" @click="loadArticleDetails">点击重试</van-button>
       </div>
       <!-- /加载失败：其它未知错误（例如网络原因或服务端异常） -->
 
       <!-- 发布评论 -->
       <van-popup v-model="isCommentPostShow" position="bottom">
-        <comment-post
-          :targetId="articleInfo.art_id"
-          @update-comment="commentPostPupupClose"
-        />
+        <comment-post :targetId="articleInfo.art_id" @update-comment="commentPostPupupClose" />
       </van-popup>
       <!-- 发布评论 -->
 
       <!-- 回复评论 -->
-      <van-popup
-        v-model="isReplyCommentShow"
-        position="bottom"
-        :style="{ height: '100%' }"
-        class="reply-popup"
-      >
+      <van-popup v-model="isReplyCommentShow" position="bottom" :style="{ height: '100%' }" class="reply-popup">
         <!-- TODO: 每次弹出回复都是重新创建 v-if="isReplyCommentShow" 或者绑定key :key="isReplyCommentShow" -->
         <!-- TODO: 弹层渲染出来以后就只是简单的切换显示和隐藏，里面的内容也不再重新渲染了，
         所以会导致我们的评论的回复列表不会动态更新了。解决办法就是在每次弹层显示的时候重新渲染组件。 -->
-        <comment-reply
-          v-if="isReplyCommentShow"
-          :comment="comment"
-          @close-reply-popup="isReplyCommentShow = false"
-        />
+        <comment-reply v-if="isReplyCommentShow" :comment="comment" @close-reply-popup="isReplyCommentShow = false" />
       </van-popup>
       <!-- 回复评论 -->
     </div>
@@ -184,7 +108,7 @@ export default {
     CommentPost,
     CommentReply
   },
-  provide () {
+  provide() {
     return {
       articleId: this.articleId
     }
@@ -197,7 +121,7 @@ export default {
       required: true
     }
   },
-  data () {
+  data() {
     return {
       articleInfo: {},
       loading: true, // 加载状态显示条件
@@ -212,13 +136,13 @@ export default {
   },
   computed: {},
   watch: {},
-  created () {
+  created() {
     this.loadArticleDetails()
   },
-  mounted () {},
+  mounted() {},
   methods: {
     // #1 获取文章详情
-    async loadArticleDetails () {
+    async loadArticleDetails() {
       // 开始时 显示加载状态
       this.loading = true
       try {
@@ -250,7 +174,7 @@ export default {
       this.loading = false
     },
     // ! 图片预览
-    imgPreview () {
+    imgPreview() {
       // 拿到article-content标签 并且 拿到其中的imgDom标签
       const oImgs = this.$refs['article-content'].querySelectorAll('img')
       const images = []
@@ -258,7 +182,7 @@ export default {
       oImgs.forEach((img, index) => {
         images.push(img.src)
         // 给每个imgDom注册点击事件
-        img.onclick = function () {
+        img.onclick = function() {
           ImagePreview({
             images, // images图片路径组成的数组
             startPosition: index
@@ -268,7 +192,7 @@ export default {
     },
     // 评论发布框
     // 评论关闭
-    commentPostPupupClose (data) {
+    commentPostPupupClose(data) {
       // 关闭弹框
       this.isCommentPostShow = false
       // 新发表的评论添加到评论列表头部
@@ -277,7 +201,7 @@ export default {
       this.commentTotalCount++
     },
     // 回复评论
-    replyCommentShow (comment) {
+    replyCommentShow(comment) {
       // 回复弹层
       this.isReplyCommentShow = true
       this.comment = comment

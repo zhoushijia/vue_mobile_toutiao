@@ -2,36 +2,15 @@
   <div class="search-container">
     <!-- Tips: 在 van-search 外层增加 form 标签，且 action 不为空，即可在 iOS 输入法中显示搜索按钮。 -->
     <form class="search-form" action="/">
-      <van-search
-        class="search-input"
-        v-model="searchText"
-        background="#3296fa"
-        show-action
-        placeholder="请输入搜索关键词"
-        @search="onSearch"
-        @cancel="onCancel"
-        @focus="isResultsShow = false"
-      />
+      <van-search class="search-input" v-model="searchText" background="#3296fa" show-action placeholder="请输入搜索关键词" @search="onSearch" @cancel="onCancel" @focus="isResultsShow = false" />
     </form>
     <!-- 搜索结果 -->
-    <search-results
-      v-if="isResultsShow"
-      :searchText="searchText"
-    ></search-results>
+    <search-results v-if="isResultsShow" :searchText="searchText"></search-results>
     <!-- 搜索联想建议 -->
     <!-- 联想建议的请求可以在父组件执行  也可以在子组件中进行 子组件进行更能实现分离的思想 -->
-    <search-suggestion
-      v-else-if="searchText"
-      :searchText="searchText"
-      @search="onSearch"
-    ></search-suggestion>
+    <search-suggestion v-else-if="searchText" :searchText="searchText" @search="onSearch"></search-suggestion>
     <!-- 搜索历史 -->
-    <search-history
-      :searchHistories="searchHistories"
-      v-else
-      @search="onSearch"
-      @clear-search-histories="searchHistories = []"
-    ></search-history>
+    <search-history :searchHistories="searchHistories" v-else @search="onSearch" @clear-search-histories="searchHistories = []"></search-history>
   </div>
 </template>
 

@@ -1,9 +1,5 @@
 <template>
-  <van-icon
-    :name="isLike === 1 ? 'good-job' : 'good-job-o'"
-    :color="isLike === 1 ? 'red' : '#777'"
-    @click="isLikeClick"
-  />
+  <van-icon :name="isLike === 1 ? 'good-job' : 'good-job-o'" :color="isLike === 1 ? 'red' : '#777'" @click="isLikeClick" />
 </template>
 
 <script>

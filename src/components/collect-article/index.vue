@@ -1,9 +1,5 @@
 <template>
-  <van-icon
-    :name="isCollected ? 'star' : 'star-o'"
-    :color="isCollected ? '#ffa500' : '#777'"
-    @click="isCollectClick"
-  />
+  <van-icon :name="isCollected ? 'star' : 'star-o'" :color="isCollected ? '#ffa500' : '#777'" @click="isCollectClick" />
 </template>
 
 <script>

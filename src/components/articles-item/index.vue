@@ -9,11 +9,7 @@
       <!-- 下方展示内容 -->
       <div slot="label">
         <div class="cover-wrap" v-if="article.cover.type === 3">
-          <div
-            v-for="(img, index) in article.cover.images"
-            :key="index"
-            class="cover-item"
-          >
+          <div v-for="(img, index) in article.cover.images" :key="index" class="cover-item">
             <van-image :src="img" fit="cover" class="cover-item-img" />
           </div>
         </div>
@@ -24,13 +20,7 @@
         </div>
       </div>
       <!-- 右侧展示内容 -->
-      <van-image
-        v-if="article.cover.type === 1"
-        class="right-cover"
-        :src="article.cover.images[0]"
-        slot="default"
-        fit="cover"
-      />
+      <van-image v-if="article.cover.type === 1" class="right-cover" :src="article.cover.images[0]" slot="default" fit="cover" />
     </van-cell>
   </div>
 </template>

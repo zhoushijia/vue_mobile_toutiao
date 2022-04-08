@@ -1,18 +1,7 @@
 <template>
   <div class="search-results">
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-      :error.sync="error"
-      error-text="加载失败，请点击重试"
-    >
-      <van-cell
-        v-for="(article, index) in list"
-        :key="index"
-        :title="article.title"
-      />
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :error.sync="error" error-text="加载失败，请点击重试">
+      <van-cell v-for="(article, index) in list" :key="index" :title="article.title" />
     </van-list>
   </div>
 </template>

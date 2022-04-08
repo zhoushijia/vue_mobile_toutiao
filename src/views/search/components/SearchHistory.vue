@@ -8,19 +8,9 @@
         &nbsp;&nbsp;
         <span @click="isDeleteShow = false">完成</span>
       </div>
-      <van-icon
-        v-else
-        slot="default"
-        name="delete"
-        @click="isDeleteShow = true"
-      ></van-icon>
+      <van-icon v-else slot="default" name="delete" @click="isDeleteShow = true"></van-icon>
     </van-cell>
-    <van-cell
-      :title="history"
-      v-for="(history, index) in searchHistories"
-      :key="index"
-      @click="updateSearchHistories(history, index)"
-    >
+    <van-cell :title="history" v-for="(history, index) in searchHistories" :key="index" @click="updateSearchHistories(history, index)">
       <van-icon slot="default" name="close" v-show="isDeleteShow"></van-icon>
     </van-cell>
   </div>

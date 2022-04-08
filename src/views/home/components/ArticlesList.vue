@@ -8,24 +8,9 @@
         List 初始化后会触发一次 load 事件，用于加载第一屏的数据
         如果一次请求加载的数据条数较少，导致列表内容无法铺满当前屏幕，List 会继续触发 load 事件，直到内容铺满屏幕或数据全部加载完成
       -->
-    <van-pull-refresh
-      v-model="isRefreshLoading"
-      :success-text="isRefreshSuccessText"
-      @refresh="onRefresh"
-    >
-      <van-list
-        v-model="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-        :error.sync="error"
-        error-text="请求失败，点击重新加载"
-      >
-        <articles-item
-          v-for="(article, index) in list"
-          :key="index"
-          :article="article"
-        ></articles-item>
+    <van-pull-refresh v-model="isRefreshLoading" :success-text="isRefreshSuccessText" @refresh="onRefresh">
+      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :error.sync="error" error-text="请求失败，点击重新加载">
+        <articles-item v-for="(article, index) in list" :key="index" :article="article"></articles-item>
       </van-list>
     </van-pull-refresh>
   </div>

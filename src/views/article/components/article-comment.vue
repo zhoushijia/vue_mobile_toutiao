@@ -1,20 +1,8 @@
 <template>
   <div class="article-comments">
     <!-- 评论列表 -->
-    <van-list
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      :error.sync="error"
-      error-text="请求失败，点击重新加载"
-      @load="onLoad"
-    >
-      <comment-item
-        @reply-comment="$emit('reply-comment', $event)"
-        v-for="(comment, index) in list"
-        :key="index"
-        :comment="comment"
-      />
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" :error.sync="error" error-text="请求失败，点击重新加载" @load="onLoad">
+      <comment-item @reply-comment="$emit('reply-comment', $event)" v-for="(comment, index) in list" :key="index" :comment="comment" />
     </van-list>
     <!-- 评论列表 -->
   </div>

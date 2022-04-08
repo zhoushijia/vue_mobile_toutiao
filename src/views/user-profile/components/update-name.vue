@@ -1,23 +1,9 @@
 <template>
   <div class="update-name">
-    <van-nav-bar
-      title="修改姓名"
-      left-text="取消"
-      right-text="完成"
-      @click-left="$emit('close-update-name')"
-      @click-right="onUpdateName"
-    />
+    <van-nav-bar title="修改姓名" left-text="取消" right-text="完成" @click-left="$emit('close-update-name')" @click-right="onUpdateName" />
     <!-- 修改框 -->
     <div style="padding:10px">
-      <van-field
-        v-model.trim="localName"
-        rows="2"
-        autosize
-        type="textarea"
-        maxlength="7"
-        placeholder="请输入姓名"
-        show-word-limit
-      />
+      <van-field v-model.trim="localName" rows="2" autosize type="textarea" maxlength="7" placeholder="请输入姓名" show-word-limit />
     </div>
   </div>
 </template>

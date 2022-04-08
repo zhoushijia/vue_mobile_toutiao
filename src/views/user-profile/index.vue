@@ -1,12 +1,7 @@
 <template>
   <div class="user-profile">
     <!-- 导航栏 -->
-    <van-nav-bar
-      class="page-nav-bar"
-      title="个人信息"
-      left-arrow
-      @click-left="$router.back()"
-    />
+    <van-nav-bar class="page-nav-bar" title="个人信息" left-arrow @click-left="$router.back()" />
     <!-- /导航栏 -->
 
     <!-- 头像上传栏 -->
@@ -17,70 +12,33 @@
     <van-cell title="头像" is-link @click="$refs.imgFile.click()">
       <van-image class="avatar" fit="cover" round :src="userInfo.photo" />
     </van-cell>
-    <van-cell
-      title="姓名"
-      :value="userInfo.name"
-      is-link
-      @click="isUserProfileNameEditShow = true"
-    />
-    <van-cell
-      title="性别"
-      :value="userInfo.gender === 0 ? '男' : '女'"
-      is-link
-      @click="isUserProfileGenderEditShow = true"
-    />
-    <van-cell
-      title="生日"
-      :value="userInfo.birthday"
-      is-link
-      @click="isUserProfileBirthEditShow = true"
-    />
+    <van-cell title="姓名" :value="userInfo.name" is-link @click="isUserProfileNameEditShow = true" />
+    <van-cell title="性别" :value="userInfo.gender === 0 ? '男' : '女'" is-link @click="isUserProfileGenderEditShow = true" />
+    <van-cell title="生日" :value="userInfo.birthday" is-link @click="isUserProfileBirthEditShow = true" />
     <!-- 个人信息 -->
 
     <!-- 修改姓名 -->
-    <van-popup
-      v-model="isUserProfileNameEditShow"
-      position="bottom"
-      :style="{ height: '100%' }"
-    >
-      <update-name
-        @close-update-name="isUserProfileNameEditShow = false"
-        v-model="userInfo.name"
-      />
+    <van-popup v-model="isUserProfileNameEditShow" position="bottom" :style="{ height: '100%' }">
+      <update-name @close-update-name="isUserProfileNameEditShow = false" v-model="userInfo.name" />
     </van-popup>
     <!-- 修改姓名 -->
 
     <!-- 修改性别 -->
     <van-popup v-model="isUserProfileGenderEditShow" position="bottom">
-      <update-gender
-        @close="isUserProfileGenderEditShow = false"
-        v-model="userInfo.gender"
-      />
+      <update-gender @close="isUserProfileGenderEditShow = false" v-model="userInfo.gender" />
     </van-popup>
     <!-- 修改性别 -->
 
     <!-- 修改生日 -->
     <van-popup v-model="isUserProfileBirthEditShow" position="bottom">
-      <update-birth
-        @close="isUserProfileBirthEditShow = false"
-        v-model="userInfo.birthday"
-      />
+      <update-birth @close="isUserProfileBirthEditShow = false" v-model="userInfo.birthday" />
     </van-popup>
     <!-- 修改生日 -->
 
     <!-- 修改头像图片 -->
-    <van-popup
-      v-model="isUserProfileAvatarEditShow"
-      position="bottom"
-      style="height: 100%"
-    >
+    <van-popup v-model="isUserProfileAvatarEditShow" position="bottom" style="height: 100%">
       <!-- 重新渲染，清楚弹框的display -->
-      <update-avatar
-        v-if="isUserProfileAvatarEditShow"
-        :img="avatar"
-        @close="isUserProfileAvatarEditShow = false"
-        @update-avatar="userInfo.photo = $event"
-      />
+      <update-avatar v-if="isUserProfileAvatarEditShow" :img="avatar" @close="isUserProfileAvatarEditShow = false" @update-avatar="userInfo.photo = $event" />
     </van-popup>
     <!-- 修改头像图片 -->
   </div>

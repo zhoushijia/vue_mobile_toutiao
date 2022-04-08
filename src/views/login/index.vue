@@ -3,62 +3,26 @@
     <!-- 导航栏 -->
     <van-nav-bar class="page-nav-bar" title="登录">
       <!-- $route.query.redirect 保证是由内部跳转实现关闭icon的显示 -->
-      <van-icon
-        v-if="$route.query.redirect"
-        slot="left"
-        name="cross"
-        class="van-icon"
-        @click="$router.push($route.query.redirect || '/')"
-      />
+      <van-icon v-if="$route.query.redirect" slot="left" name="cross" class="van-icon" @click="$router.push($route.query.redirect || '/')" />
     </van-nav-bar>
     <!-- 登录表单 -->
     <van-form @submit="onLogin" ref="loginFormRef">
-      <van-field
-        name="mobile"
-        placeholder="请输入手机号"
-        v-model="user.mobile"
-        :rules="userFormRules.mobile"
-        type="number"
-        maxlength="11"
-      >
+      <van-field name="mobile" placeholder="请输入手机号" v-model="user.mobile" :rules="userFormRules.mobile" type="number" maxlength="11">
         <i slot="left-icon" class="toutiao toutiao-shouji"></i>
       </van-field>
-      <van-field
-        name="code"
-        placeholder="请输入短信验证码"
-        v-model="user.code"
-        :rules="userFormRules.code"
-        maxlength="6"
-        type="number"
-      >
+      <van-field name="code" placeholder="请输入短信验证码" v-model="user.code" :rules="userFormRules.code" maxlength="6" type="number">
         <i slot="left-icon" class="toutiao toutiao-yanzhengma"></i>
         <template #button>
           <!-- 倒计时组件 -->
           <!-- 倒计时结束触发finish -->
-          <van-count-down
-            v-if="isCountDownShow"
-            :time="60 * 1000"
-            format="ss s"
-            @finish="isCountDownShow = false"
-          />
+          <van-count-down v-if="isCountDownShow" :time="60 * 1000" format="ss s" @finish="isCountDownShow = false" />
           <!-- 发送验证码 -->
           <!-- native-type="button" 保证不触发提交事件 -->
-          <van-button
-            v-else
-            round
-            size="small"
-            type="default"
-            class="send-sms-btn"
-            native-type="button"
-            @click="sendSms"
-            >获取验证码</van-button
-          >
+          <van-button v-else round size="small" type="default" class="send-sms-btn" native-type="button" @click="sendSms">获取验证码</van-button>
         </template>
       </van-field>
       <div class="login-btn-wrap">
-        <van-button block type="info" native-type="submit" class="login-btn"
-          >登录</van-button
-        >
+        <van-button block type="info" native-type="submit" class="login-btn">登录</van-button>
       </div>
     </van-form>
   </div>
@@ -68,7 +32,7 @@
 import { login, sendSms } from '@/api/user'
 export default {
   name: 'loginIndex',
-  data () {
+  data() {
     return {
       // 表单数据收集
       user: {
@@ -94,7 +58,7 @@ export default {
   },
   methods: {
     // #1 登录
-    async onLogin (v) {
+    async onLogin(v) {
       // vant 组件表格收集数据方式
       console.log(v)
 
@@ -127,7 +91,7 @@ export default {
       }
     },
     // #2 发送验证码
-    async sendSms () {
+    async sendSms() {
       // 验证手机号是否合法
       try {
         // 这里的'mobile'对应的是组件field中的name 会调用对应的rules规则

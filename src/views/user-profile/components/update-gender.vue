@@ -1,15 +1,7 @@
 <template>
   <div class="update-gender">
     <!-- 选择器  可以做级联 -->
-    <van-picker
-      title="性别"
-      show-toolbar
-      :columns="columns"
-      :default-index="value"
-      @confirm="onConfirm"
-      @cancel="$emit('close')"
-      @change="onChange"
-    />
+    <van-picker title="性别" show-toolbar :columns="columns" :default-index="value" @confirm="onConfirm" @cancel="$emit('close')" @change="onChange" />
   </div>
 </template>
 

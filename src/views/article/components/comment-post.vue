@@ -1,18 +1,7 @@
 <template>
   <div class="comment-post">
-    <van-field
-      class="post-field"
-      v-model.trim="message"
-      rows="2"
-      autosize
-      type="textarea"
-      maxlength="50"
-      placeholder="请输入留言"
-      show-word-limit
-    />
-    <van-button class="post-btn" :disabled="!message" @click="postComment"
-      >发布</van-button
-    >
+    <van-field class="post-field" v-model.trim="message" rows="2" autosize type="textarea" maxlength="50" placeholder="请输入留言" show-word-limit />
+    <van-button class="post-btn" :disabled="!message" @click="postComment">发布</van-button>
   </div>
 </template>
 

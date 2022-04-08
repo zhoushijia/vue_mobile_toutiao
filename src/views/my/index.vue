@@ -14,15 +14,7 @@
               })
             " -->
         <div class="right">
-          <van-button
-            size="mini"
-            round
-            :to="{
-              name: 'user-profile',
-              query: { redirect: '/user-profile' }
-            }"
-            >编辑资料</van-button
-          >
+          <van-button size="mini" round :to="{ name: 'user-profile',query: { redirect: '/user-profile' } }">编辑资料</van-button>
         </div>
       </div>
       <div class="data-stats">
@@ -47,10 +39,7 @@
 
     <!-- 未登录头部 -->
     <div v-else class="login-header not-login">
-      <div
-        class="login-btn"
-        @click="$router.push({ name: 'login', query: { redirect: '/my' } })"
-      >
+      <div class="login-btn" @click="$router.push({ name: 'login', query: { redirect: '/my' } })">
         <img src="~@/assets/mobile.png" alt="" class="login-img" />
         <span class="text">登录 / 注册</span>
       </div>
@@ -71,13 +60,7 @@
     <!-- 单元格 -->
     <van-cell title="消息通知" is-link />
     <van-cell class="mb-9" title="小智同学" is-link />
-    <van-cell
-      v-if="user"
-      class="logout-cell"
-      clickable
-      title="退出登录"
-      @click="onLoginOut"
-    />
+    <van-cell v-if="user" class="logout-cell" clickable title="退出登录" @click="onLoginOut" />
   </div>
 </template>
 

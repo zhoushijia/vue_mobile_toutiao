@@ -20,10 +20,7 @@
       </van-tabbar-item>
       <van-tabbar-item to="/my">
         <i slot="icon" class="toutiao toutiao-wode"></i>
-        <span
-          class="text"
-          v-text="$store.state.user ? '我的' : '未登录'"
-        ></span>
+        <span class="text" v-text="$store.state.user ? '我的' : '未登录'"></span>
       </van-tabbar-item>
     </van-tabbar>
   </div>

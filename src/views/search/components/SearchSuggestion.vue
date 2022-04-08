@@ -1,12 +1,7 @@
 <template>
   <div class="search-suggestion">
     <!-- #3 点击传值 触发子传父  -->
-    <van-cell
-      v-for="(text, index) in suggestions"
-      :key="index"
-      icon="search"
-      @click="$emit('search', text)"
-    >
+    <van-cell v-for="(text, index) in suggestions" :key="index" icon="search" @click="$emit('search', text)">
       <!-- #2 搜索文字高亮 -->
       <span slot="title" v-html="highlight(text)"></span>
     </van-cell>
